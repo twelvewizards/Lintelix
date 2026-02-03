@@ -7,27 +7,41 @@
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #151515;
-  background: #f6f3ee;
+  color: #ffffff;
+  background: #0f0f0f;
 }
 
-.page {
+.hero {
   min-height: 100svh;
+  position: relative;
   display: grid;
   place-items: center;
-  gap: 0.75rem;
   padding: 4rem 1.5rem;
-  text-align: center;
+  background: url("../assets/img/beautiful-shot-silhouette-crane-sunset.png")
+    center / cover no-repeat;
 }
 
-.title {
-  margin: 0;
-  font-size: clamp(2.25rem, 6vw, 3.75rem);
-  letter-spacing: 0.02em;
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
 }
 
-.subtitle {
-  margin: 0;
-  font-size: 1rem;
-  opacity: 0.75;
+.hero__content {
+  position: relative;
+  z-index: 1;
+  width: min(900px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.hero__logo {
+  width: min(720px, 90%);
+  height: auto;
 }
