@@ -46,7 +46,7 @@ body {
 }
 
 .hero {
-  min-height: 100svh;
+  min-height: 800px;
   position: relative;
   display: grid;
   place-items: center;
@@ -58,17 +58,15 @@ body {
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
+  /* semi-transparent red overlay (50% opacity) */
+  background: rgba(7, 23, 52, .75);
+  /*background: rgba(25, 156, 255, .7);*/
 }
 
 .hero__content {
   position: relative;
   z-index: 1;
-  width: min(900px, 100%);
+  width: min(300px, 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,8 +74,82 @@ body {
 }
 
 .hero__logo {
-  width: min(720px, 90%);
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hero__logo-wrap {
+  position: relative;
+  width: min(1020px, 90%);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  --reveal-x: 50%;
+  --reveal-y: 50%;
+  --reveal-size: 0px;
+}
+
+.hero__logo-stack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__logo-hex-base {
+  position: absolute;
+  inset: 0;
+  background: #09304e;
+  -webkit-mask-image: url("../assets/img/AMHexagon.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url("../assets/img/AMHexagon.svg");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  box-shadow: inset 0 0 50px 40px #199cff;
+}
+
+.hero__logo-brain {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  
+}
+
+.hero__logo-top {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: radial-gradient(
+    circle var(--reveal-size) at var(--reveal-x) var(--reveal-y),
+    transparent 0,
+    transparent 70%,
+    #000 72%
+  );
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image: radial-gradient(
+    circle var(--reveal-size) at var(--reveal-x) var(--reveal-y),
+    transparent 0,
+    transparent 70%,
+    #000 80%
+  );
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+}
+
+.hero__logo-wrap:hover {
+  --reveal-size: 90px;
+}
+
+@media (max-width: 600px) {
+  .hero__logo-wrap:hover {
+    --reveal-size: 100px;
+  }
 }
 
 .feature {
