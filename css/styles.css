@@ -1,3 +1,37 @@
+@font-face {
+  font-family: "Sora";
+  src: url("../assets/fonts/Sora/static/Sora-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("../assets/fonts/Sora/static/Sora-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Zalando Sans";
+  src: url("../assets/fonts/Zalando_Sans/static/ZalandoSans-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Zalando Sans";
+  src: url("../assets/fonts/Zalando_Sans/static/ZalandoSans-Light.ttf")
+    format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -6,7 +40,7 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Zalando Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
   background: #0f0f0f;
 }
@@ -44,4 +78,295 @@ body {
 .hero__logo {
   width: min(720px, 90%);
   height: auto;
+}
+
+.feature {
+  background: #0b0f17;
+  padding: 4.5rem 1.5rem 6rem;
+}
+
+.feature__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+  justify-items: center;
+  text-align: center;
+}
+
+.feature__title {
+  width: min(920px, 100%);
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: "Sora", "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 600;
+}
+
+.feature__title--top {
+  grid-template-columns: auto 1fr;
+  justify-items: start;
+  text-align: left;
+}
+
+.feature__title--bottom {
+  grid-template-columns: 1fr auto;
+  justify-items: end;
+  text-align: right;
+}
+
+.feature__title h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+}
+
+.feature__line {
+  height: 2px;
+  width: 100%;
+  background: #ffffff;
+  opacity: 0.8;
+}
+
+.feature__frame {
+  position: relative;
+  width: min(920px, 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.feature__screenshot {
+  width: 100%;
+  display: block;
+}
+
+.feature__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.feature__triangle {
+  width: 68px;
+  height: 68px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.85);
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.feature__triangle::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 18px solid #ffffff;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  margin-left: 4px;
+}
+
+.feature__frame:hover .feature__triangle {
+  background: rgba(0, 0, 0, 0.95);
+  transform: scale(0.98);
+}
+
+.feature__cta {
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 2.4rem;
+  font-size: 1rem;
+  font-family: "Sora", "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: #ffffff;
+  color: #0b0f17;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.feature__cta:hover {
+  background: #f0f0f0;
+}
+
+.feature__cta-icon {
+  width: 0;
+  height: 0;
+  border-left: 12px solid #0b0f17;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+.roles {
+  background: #0b0f17;
+  padding: 4.5rem 1.5rem 6rem;
+}
+
+.roles__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2.5rem;
+}
+
+.roles__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 0.95rem;
+  text-align: center;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.roles__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.roles__card {
+  background: #ffffff;
+  color: #111827;
+  border-radius: 12px;
+  padding: 1.6rem 1.4rem 1.8rem;
+  display: grid;
+  gap: 0.9rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  text-align: center;
+  font-weight: 400;
+}
+
+.roles__card h3 {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.roles__card p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  text-align: center;
+  font-weight: 400;
+}
+
+.roles__label {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: #111827;
+  font-weight: 400;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  width: min(260px, 100%);
+  margin: 0 auto;
+  text-align: left;
+}
+
+.roles__card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 300;
+  text-align: left;
+  justify-items: start;
+  width: min(260px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.roles__card li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  font-weight: 300;
+}
+
+.roles__card li::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: url("../assets/img/sheild_tick.png") center / contain no-repeat;
+  flex: 0 0 14px;
+}
+
+.cta-banner {
+  padding: 4rem 1.5rem 5rem;
+  background: #0b0f17;
+}
+
+.cta-banner__content {
+  width: min(1353px, 100%);
+  aspect-ratio: 1353 / 687;
+  margin: 0 auto;
+  padding: 2.6rem 2.8rem 2.8rem;
+  border-radius: 4px;
+  background: linear-gradient(
+      90deg,
+      rgba(7, 15, 30, 0.9) 0%,
+      rgba(7, 15, 30, 0.5) 40%,
+      rgba(7, 15, 30, 0) 70%
+    ),
+    url("../assets/img/image_5.png") center / cover no-repeat;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.8rem;
+  align-content: start;
+}
+
+.cta-banner__content h2 {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.2vw, 2.8rem);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  line-height: 1.18;
+}
+
+.cta-banner__content h2 span {
+  display: block;
+}
+
+.cta-banner__button {
+  justify-self: start;
+  align-self: end;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  padding: 0.65rem 1.3rem;
+  background: #000000;
+  color: #ffffff;
+  font-family: "Sora", "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  margin-top: 0.6rem;
+}
+
+.cta-banner__button .feature__cta-icon {
+  border-left-color: #ffffff;
+}
+
+.cta-banner__button:hover {
+  background: #101010;
 }
