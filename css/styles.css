@@ -45,6 +45,58 @@ body {
   background: rgba(7, 23, 52, 1);
 }
 
+/* Top overlay navbar */
+:root { --top-nav-height: 64px; }
+.top-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--top-nav-height);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+}
+.top-nav__inner {
+  width: min(1353px, 100%);
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.top-nav {
+  background: linear-gradient(rgba(7,23,52,0.10), rgba(7,23,52,0.02));
+  backdrop-filter: blur(6px) saturate(120%);
+}
+.top-nav__brand img {
+  height: 36px;
+  display: block;
+}
+.top-nav__links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.top-nav__links a {
+  color: rgba(255,255,255,0.95);
+  text-decoration: none;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  padding: 0.35rem 0.5rem;
+  transition: color 0.12s ease, opacity 0.12s ease;
+}
+.top-nav__links a:hover {
+  color: #ffffff;
+  opacity: 0.95;
+}
+
+/* Ensure hero content is visible under the overlay (optional spacing) */
+.hero { padding-top: calc(4rem + var(--top-nav-height)); }
+
 .hero {
   min-height: 700px;
   position: relative;
