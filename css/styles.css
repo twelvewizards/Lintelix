@@ -45,11 +45,6 @@ body {
   background: rgba(7, 23, 52, 1);
 }
 
-:root {
-  --hero-logo-base: 360px;
-  --hero-title-base: 560px;
-}
-
 .hero {
   min-height: 800px;
   position: relative;
@@ -74,6 +69,7 @@ body {
   position: relative;
   z-index: 1;
   width: 100%;
+  height: 200px;
   display: flex;
   flex-direction: row;
   gap: 0px;
@@ -82,17 +78,15 @@ body {
   justify-content: center;
 }
 
-.hero__logo {
-  width: 100%;
+
+.hero__title {
   height: 100%;
-  flex: 1;
 }
 
 .hero__logo-wrap {
   position: relative;
   /* keep this pixel size at normal zoom, allow proportional shrink when needed */
-  flex: 1;
-  max-width: var(--hero-logo-base);
+  height: 100%;
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
@@ -158,11 +152,6 @@ body {
   --reveal-size: 90px;
 }
 
-@media (max-width: 600px) {
-  .hero__logo-wrap:hover {
-    --reveal-size: 100px;
-  }
-}
 
 .feature {
   background: #0b0f17;
