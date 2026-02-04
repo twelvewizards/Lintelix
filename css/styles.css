@@ -207,9 +207,12 @@ body {
   --reveal-size: 90px;
 }
 
+.site-sections {
+  background: linear-gradient(180deg, #141414 0%, #071734 100%);
+}
 
 .feature {
-  background: #0b0f17;
+  background: transparent;
   padding: 4.5rem 1.5rem 6rem;
 }
 
@@ -335,7 +338,7 @@ body {
 }
 
 .roles {
-  background: #0b0f17;
+  background: transparent;
   padding: 4.5rem 1.5rem 6rem;
 }
 
@@ -437,7 +440,7 @@ body {
 
 .cta-banner {
   padding: 4rem 1.5rem 5rem;
-  background: #0b0f17;
+  background: transparent;
 }
 
 .cta-banner__content {
