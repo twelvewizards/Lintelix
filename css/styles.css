@@ -40,9 +40,14 @@
 
 body {
   margin: 0;
-  font-family: "Zalando Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
-  background: #0f0f0f;
+  background: rgba(7, 23, 52, 1);
+}
+
+:root {
+  --hero-logo-base: 360px;
+  --hero-title-base: 560px;
 }
 
 .hero {
@@ -51,8 +56,10 @@ body {
   display: grid;
   place-items: center;
   padding: 4rem 1.5rem;
-  background: url("../assets/img/beautiful-shot-silhouette-crane-sunset.png")
-    center / cover no-repeat;
+  background: url("../assets/img/beautiful-shot-silhouette-crane-sunset.png");
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .hero__overlay {
@@ -66,22 +73,26 @@ body {
 .hero__content {
   position: relative;
   z-index: 1;
-  width: min(300px, 100%);
+  width: 100%;
   display: flex;
+  flex-direction: row;
+  gap: 0px;
   align-items: center;
+  flex-wrap: nowrap;
   justify-content: center;
-  padding: 1rem;
 }
 
 .hero__logo {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  flex: 1;
 }
 
 .hero__logo-wrap {
   position: relative;
-  width: min(1020px, 90%);
+  /* keep this pixel size at normal zoom, allow proportional shrink when needed */
+  flex: 1;
+  max-width: var(--hero-logo-base);
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
@@ -117,7 +128,8 @@ body {
   position: absolute;
   width: 50%;
   height: 50%;
-  
+    filter: drop-shadow(0px 0px 10px #199cff);
+
 }
 
 .hero__logo-top {
