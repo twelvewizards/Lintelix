@@ -80,4 +80,13 @@ if (heroLogoWrap && heroLogoTop) {
 		setCenterTarget();
 		startAnimation();
 	});
+
+	const hero = document.querySelector('.hero');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    // Moves background down slightly as you scroll
+    hero.style.backgroundPosition = `center ${scrollY * 0.3}px`;
+    // 0.05 = extremely subtle; tweak between 0.03–0.08
+  });
 }
