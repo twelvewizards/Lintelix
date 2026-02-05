@@ -32,6 +32,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Zalando Sans";
+  src: url("../assets/fonts/Zalando_Sans/static/ZalandoSans-Medium.ttf")
+    format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -567,4 +576,161 @@ body {
 
 .cta-banner__button:hover {
   background: #101010;
+}
+
+.action {
+  padding: 2.4rem 1.5rem 4rem;
+  background: #000000;
+}
+
+.action__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.6rem;
+}
+
+.action__title {
+  margin: 0;
+  text-align: center;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: clamp(1.1rem, 2.1vw, 1.5rem);
+}
+
+.action__frame {
+  border-radius: 0;
+  border: none;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.action__row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.action__card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 260px;
+  display: grid;
+  align-items: end;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  background-color: #0b0b0b;
+}
+
+.action__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+.action__card--wide {
+  min-height: 300px;
+}
+
+.action__card--basement {
+  background: url("../assets/img/TheBasement.png") center / cover no-repeat;
+}
+
+.action__card--familiar {
+  background: url("../assets/img/seemsfamiliar.png") center / cover no-repeat;
+}
+
+.action__content {
+  position: relative;
+  z-index: 2;
+  padding: 1.2rem 1.2rem 1.1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.action__label {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.9vw, 1.45rem);
+  font-weight: 400;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+}
+
+.action__button {
+  align-self: start;
+  justify-self: start;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  padding: 0.32rem 0.8rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
+}
+
+.action__button:hover {
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.action__arrow {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.action__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  padding-bottom: 0.15rem;
+}
+
+.action__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.action__dot--active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 900px) {
+  .action__row {
+    grid-template-columns: 1fr;
+  }
+
+  .action__arrow {
+    display: none;
+  }
 }
