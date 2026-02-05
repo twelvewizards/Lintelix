@@ -56,6 +56,18 @@ body {
 
 /* Top overlay navbar */
 :root { --top-nav-height: 70px; }
+.root-colors {
+  /* helper class if needed */
+}
+:root {
+  --accent: #199cff;
+  --brand-dark: rgba(7,23,52,1);
+  --btn-bg: #ffffff;
+  --btn-color: #0b0f17;
+  --btn-radius: 999px;
+  --btn-padding: 0.45rem 0.95rem;
+  --content-max-width: 1300px;
+}
 .top-nav {
   position: fixed;
   inset: 0 0 auto 0;
@@ -77,7 +89,7 @@ body {
   -webkit-transition: background 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 .top-nav__inner {
-  width: min(1353px, 90%);
+  width: min(1300px, 90%);
   margin: 0 auto;
   padding: 0 1rem;
   height: 100%;
@@ -103,11 +115,33 @@ body {
   align-items: center;
   height: 100%;
 }
+
+/* HTML uses .top-nav__links for the link container; keep it inline and prevent wrapping
+   on narrow screens by allowing horizontal overflow rather than stacking. */
+.top-nav__links {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.top-nav__links::-webkit-scrollbar { display: none; }
+
+.top-nav__link { white-space: nowrap; }
+.top-nav__cta { flex-shrink: 0; }
+
+@media (max-width: 520px) {
+  .top-nav__links { gap: 0.5rem; }
+  .top-nav__brand img { height: 46px; }
+}
 .top-nav__link {
   color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 600;
   display: inline-flex;
   align-items: center;
   position: relative;
@@ -115,11 +149,6 @@ body {
   min-height: 40px;
   line-height: 1;
   transition: color 0.12s ease, opacity 0.12s ease, transform 0.12s ease;
-}
-.top-nav__link:hover,
-.top-nav__link:focus {
-  color: #ffffff;
-  opacity: 0.95;
 }
 
 /* Underline implemented with a pseudo-element so it can fade/scale smoothly */
@@ -136,6 +165,7 @@ body {
   opacity: 0;
   transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 160ms ease;
   pointer-events: none;
+  color: #199cff;
 }
 .top-nav__link:hover::after,
 .top-nav__link:focus::after {
@@ -153,18 +183,52 @@ body {
   margin-left: 10px;
   min-height: 40px;
   border-radius: 999px;
-  background: #ffffff;
-  color: #0b0f17;
+  background: white;
+  color: black;
   text-decoration: none;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-  transition: transform 0.12s ease, background 0.12s ease;
+  transition: background 160ms ease, box-shadow 200ms cubic-bezier(.2,.9,.2,1);
+  will-change: box-shadow;
+  position: relative;
+  overflow: hidden;
 }
+
 .top-nav__cta:hover,
 .top-nav__cta:focus {
   background: #f0f0f0;
-  transform: translateY(-1px);
+  /* inset solid ring so outline is not clipped by overflow */
+  box-shadow: 0 14px 28px rgba(0,0,0,0.22), inset 0 0 0 3px #199cff;
+}
+
+/* subtle white shimmer (original) that does not scale the button */
+.top-nav__cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-120%);
+  opacity: 0;
+}
+
+.top-nav__cta:hover::before {
+  animation: shimmer 900ms linear forwards;
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  to { transform: translateX(120%); }
+}
+
+.top-nav__cta:active {
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+  transition-duration: 90ms;
+}
+
+.top-nav__cta:focus-visible {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.22), inset 0 0 0 3px #199cff;
 }
 
 /* Keep hero visible under the fixed navbar; preserve spacing */
@@ -261,35 +325,45 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-mask-image: radial-gradient(
-    circle var(--reveal-size) at var(--reveal-x) var(--reveal-y),
-    transparent 0,
-    transparent 70%,
-    #000 72%
-  );
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-image: radial-gradient(
-    circle var(--reveal-size) at var(--reveal-x) var(--reveal-y),
-    transparent 0,
-    transparent 70%,
-    #000 80%
-  );
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
+  /* Remove masking so the top logo is always fully visible (no hover reveal) */
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
+/* Remove hover-based reveal */
 .hero__logo-wrap:hover {
-  --reveal-size: 90px;
+  --reveal-size: 0px;
 }
 
 .site-sections {
   background: linear-gradient(180deg, #141414 0%, #071734 100%);
 }
 
+/* Shared background for Video demo, Roles, and CTA banner
+   Implemented as a single element placed behind all three sections. */
+.shared-bg-wrapper {
+  position: relative;
+}
+.shared-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Much larger highlights using a darker variant of #199cff so it's blue-only */
+  background: radial-gradient(3200px 1600px at 6% 18%, rgba(11,95,158,0.20), transparent 65%),
+              radial-gradient(3000px 1400px at 94% 82%, rgba(11,95,158,0.12), transparent 70%),
+              linear-gradient(180deg, rgba(4,6,10,0.96), rgba(6,8,14,0.94));
+  background-blend-mode: screen, screen, normal;
+  background-size: cover;
+}
+.shared-bg-wrapper > section {
+  position: relative;
+  z-index: 1;
+}
+
 .feature {
   background: transparent;
-  padding: 4.5rem 1.5rem 6rem;
+  padding: 3rem 1.5rem;
 }
 
 .feature__container {
@@ -308,8 +382,46 @@ body {
   gap: 1.5rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-family: "Sora", "Zalando Sans", "Segoe UI", sans-serif;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+}
+
+/* Unified section title styles so section headings share a consistent look */
+.section-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
   font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.04);
+  padding: 0.7rem 1.6rem; /* increased vertical and horizontal padding */
+  border-radius: var(--btn-radius);
+  min-height: 40px;
+  width: auto;
+  max-width: min(680px, 100%);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.section-title--feature { width: auto; gap: 0.75rem; }
+.section-title--small { font-weight: 600; letter-spacing: 0.08em; }
+
+/* Ensure any heading using .section-title shares identical appearance
+   (override local modifiers like .roles__eyebrow or .action__title) */
+.section-title.section-title--feature,
+.roles__eyebrow.section-title,
+.action__title.section-title,
+.section-title.section-title--small {
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  text-transform: uppercase;
+  margin: 0 auto;
+  display: inline-flex;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 .feature__title--top {
@@ -387,23 +499,40 @@ body {
 .feature__cta {
   border: none;
   border-radius: 999px;
-  padding: 0.85rem 2.4rem;
-  font-size: 1rem;
-  font-family: "Sora", "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  padding: 0.85rem 1.8rem;
+  font-size: 1.2rem;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
   background: #ffffff;
   color: #0b0f17;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.9rem;
+  margin-top: 20px;
 }
 
 .feature__cta:hover {
   background: #f0f0f0;
 }
+
+/* Make primary buttons consistent with the navbar CTA */
+.feature__cta,
+.cta-banner__button,
+.action__button {
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  border-radius: var(--btn-radius);
+  padding: 0.6rem 1.2rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.feature__cta { font-size: 1.05rem; padding: 0.7rem 1.4rem; }
+
 
 .feature__cta-icon {
   width: 0;
@@ -415,11 +544,11 @@ body {
 
 .roles {
   background: transparent;
-  padding: 4.5rem 1.5rem 6rem;
+  padding: 3rem 1.5rem;
 }
 
 .roles__container {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   display: grid;
   gap: 2.5rem;
@@ -427,13 +556,10 @@ body {
 
 .roles__eyebrow {
   margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.35em;
-  font-size: 0.95rem;
   text-align: center;
-  font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  letter-spacing: 0.32em;
 }
 
 .roles__grid {
@@ -515,16 +641,16 @@ body {
 }
 
 .cta-banner {
-  padding: 4rem 1.5rem 5rem;
+  padding: 3rem 1.5rem;
   background: transparent;
 }
 
 .cta-banner__content {
-  width: min(1353px, 100%);
+  max-width: var(--content-max-width);
   aspect-ratio: 1353 / 687;
   margin: 0 auto;
   padding: 2.6rem 2.8rem 2.8rem;
-  border-radius: 4px;
+  border-radius: 15px;
   background: linear-gradient(
       90deg,
       rgba(7, 15, 30, 0.9) 0%,
@@ -553,16 +679,15 @@ body {
 .cta-banner__button {
   justify-self: start;
   align-self: end;
-  border: 1px solid #ffffff;
-  border-radius: 6px;
-  padding: 0.65rem 1.3rem;
-  background: #000000;
-  color: #ffffff;
-  font-family: "Sora", "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.75rem;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-size: 0.95rem;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -579,12 +704,12 @@ body {
 }
 
 .action {
-  padding: 2.4rem 1.5rem 4rem;
+  padding: 3rem 1.5rem;
   background: #000000;
 }
 
 .action__container {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   display: grid;
   gap: 1.6rem;
@@ -672,14 +797,14 @@ body {
 .action__button {
   align-self: start;
   justify-self: start;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  background: rgba(0, 0, 0, 0.7);
-  color: #ffffff;
-  padding: 0.32rem 0.8rem;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  border-radius: 4px;
+  border: none;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.75rem;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  border-radius: var(--btn-radius);
   cursor: pointer;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
   font-weight: 500;
