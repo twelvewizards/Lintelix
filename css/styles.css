@@ -49,13 +49,13 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Zalando Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
   background: rgba(7, 23, 52, 1);
 }
 
 /* Top overlay navbar */
-:root { --top-nav-height: 64px; }
+:root { --top-nav-height: 70px; }
 .top-nav {
   position: fixed;
   inset: 0 0 auto 0;
@@ -67,9 +67,17 @@ body {
   display: flex;
   align-items: center;
   pointer-events: auto;
+  /* alpha and blur are controlled by CSS vars (set from JS) */
+  --nav-alpha: 0;
+  --nav-blur: 0px;
+  background: rgba(7, 23, 52, var(--nav-alpha));
+  backdrop-filter: blur(var(--nav-blur)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--nav-blur)) saturate(120%);
+  transition: background 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  -webkit-transition: background 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 .top-nav__inner {
-  width: min(1353px, 100%);
+  width: min(1353px, 90%);
   margin: 0 auto;
   padding: 0 1rem;
   height: 100%;
@@ -77,31 +85,58 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+.top-nav--scrolled {
+  /* kept for compatibility if class is used elsewhere; avoid hardcoded blur
+     so JS can animate --nav-blur smoothly. Box-shadow is handled by
+     the main .top-nav using the alpha variable. */
+}
 .top-nav {
-  background: linear-gradient(rgba(7,23,52,0.10), rgba(7,23,52,0.02));
-  backdrop-filter: blur(6px) saturate(120%);
+  box-shadow: 0 6px 20px rgba(2,6,23, calc(var(--nav-alpha) * 0.45));
 }
 .top-nav__brand img {
-  height: 36px;
+  height: 52px;
   display: block;
 }
-.top-nav__links {
+.top-nav__actions {
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
   align-items: center;
 }
-.top-nav__links a {
-  color: rgba(255,255,255,0.95);
+.top-nav__link {
+  color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 400;
-  padding: 0.35rem 0.5rem;
+  font-weight: 600;
+  padding: 0.35rem 1rem;
   transition: color 0.12s ease, opacity 0.12s ease;
 }
-.top-nav__links a:hover {
+.top-nav__link:hover,
+.top-nav__link:focus {
   color: #ffffff;
   opacity: 0.95;
 }
+.top-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0b0f17;
+  text-decoration: none;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+.top-nav__cta:hover,
+.top-nav__cta:focus {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+/* Keep hero visible under the fixed navbar; preserve spacing */
+.hero { padding-top: calc(4rem + var(--top-nav-height)); }
 
 /* Ensure hero content is visible under the overlay (optional spacing) */
 .hero { padding-top: calc(4rem + var(--top-nav-height)); }
