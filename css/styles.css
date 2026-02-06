@@ -240,13 +240,19 @@ body {
 .hero {
   min-height: 700px;
   position: relative;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+
   padding: 4rem 1.5rem;
   background: url("../assets/img/beautiful-shot-silhouette-crane-sunset.png");
   background-size:cover;
   background-repeat: no-repeat;
   background-position: center;
+  gap: 10px;
+  padding-top: 80px;
 }
 
 .hero__overlay {
@@ -279,7 +285,7 @@ body {
 
 .hero__logo-wrap {
   width: min(200px, 33%);
-  margin-right: max(-10px, -.75vw);
+  margin-right: 0.25rem;
 
   position: relative;
   aspect-ratio: 1 / 1;
@@ -333,6 +339,29 @@ body {
 /* Remove hover-based reveal */
 .hero__logo-wrap:hover {
   --reveal-size: 0px;
+}
+
+/* Box shown below the hero logo for short descriptive text */
+.hero__content { gap: 0.18rem; }
+
+.hero__box {
+  margin-top: -0.85rem; /* pull closer to hero content */
+  position: relative;
+  z-index: 3; /* ensure it sits above the overlay */
+  background: rgba(255, 255, 255, 0.0);
+  padding: 1rem 1.2rem;
+  border-radius: 20px;
+  width: min(86%, 900px);
+  text-align: center;
+  box-shadow: 0 0px 1px 3px #199bff00;
+}
+
+.hero__box-text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.3) !important; /* ensure pure white for readability */
+  line-height: 1.25;
+  font-weight: 400;
+  font-size: 1.2rem;
 }
 
 .site-sections {
