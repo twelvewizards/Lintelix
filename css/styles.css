@@ -68,6 +68,24 @@ body {
   --btn-padding: 0.45rem 0.95rem;
   --content-max-width: 1300px;
 }
+
+/* Global text highlight / selection color */
+::selection {
+  background: var(--accent); /* red */
+  color: #ffffff;
+}
+::-moz-selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Mark element highlight */
+mark {
+  background: var(--accent);
+  color: #ffffff;
+  padding: 0 0.12em;
+  border-radius: 2px;
+}
 .top-nav {
   position: fixed;
   inset: 0 0 auto 0;
@@ -241,18 +259,17 @@ body {
   min-height: 700px;
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   align-content: center;
-
-  padding: 4rem 1.5rem;
+  
+  padding: 0px 10vw;
   background: url("../assets/img/beautiful-shot-silhouette-crane-sunset.png");
   background-size:cover;
   background-repeat: no-repeat;
   background-position: center;
-  gap: 10px;
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 .hero__overlay {
@@ -267,7 +284,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;           /* take full container width */
+  width: 600px;           /* take full container width */
   max-width: 100%;  
   z-index: 1;
 }
@@ -345,23 +362,134 @@ body {
 .hero__content { gap: 0.18rem; }
 
 .hero__box {
-  margin-top: -0.85rem; /* pull closer to hero content */
+  margin-top: 10px; /* pull closer to hero content */
   position: relative;
   z-index: 3; /* ensure it sits above the overlay */
-  background: rgba(255, 255, 255, 0.0);
   padding: 1rem 1.2rem;
+  padding-left: 1.6rem; /* extra space to separate from the divider */
   border-radius: 20px;
-  width: min(86%, 900px);
-  text-align: center;
-  box-shadow: 0 0px 1px 3px #199bff00;
+  width: min(50%, 450px);
+  text-align: left;
+
+  /* Frosted glass style */
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  border: 2px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+
+  /* spacing handled by the divider element */
+  margin-left: 0;
+}
+
+.hero__box-text-underline {
+  color: white;
+}
+
+/* Smooth scroll for anchor navigation */
+html { scroll-behavior: smooth; }
+
+/* Learn more button inside hero */
+.hero__learn-more {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(16px, 3.5vh, 28px);
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(25,156,255,0.14), rgba(255,255,255,0.02));
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  font-weight: 400;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  box-shadow: 0 8px 22px rgba(2,6,23,0.45);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+.hero__learn-more:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(25,156,255,0.12); }
+
+/* small downward triangle after the button label */
+.hero__learn-more::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 0.6rem;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid currentColor;
+  transform: translateY(1px) rotate(180deg); /* rotate to ensure it points down */
+}
+
+/* Vertical divider element between hero content and box */
+.hero__divider {
+  width: 1px;
+  height: 90px;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.3);
+
+  margin-left: 10px;
+  margin-right: 30px;
+
+  border-radius: 1px;
+  align-self: center;
+  box-shadow: 0 6px 18px rgba(25,156,255,0.06);
 }
 
 .hero__box-text {
   margin: 0;
-  color: rgba(255, 255, 255, 0.3) !important; /* ensure pure white for readability */
+  color: rgba(255, 255, 255, .6) !important; /* ensure pure white for readability */
   line-height: 1.25;
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+/* specific underline tweaks for inline highlights inside the hero box */
+.hero__box .hero__box-text-underline,
+.hero__box-text-underline {
+  text-underline-offset: 2px;
+  text-decoration-thickness: 2px;
+}
+
+@media (max-width: 760px) {
+  .hero__divider {
+      width: 90px;
+      height: 1px;
+
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero__box  {
+    width: 100%;
+  }
+
+  .hero__box-text {
+    font-size: 1.3rem;
+  }
+}
+
+.hero__box-text-underline {
+  color: white;
+}
+
+/* Ensure any descendant that renders an underline uses the accent color (higher specificity) */
+.hero__box, .hero__box * {
+  -webkit-text-decoration-color: var(--accent) !important;
+  text-decoration-color: var(--accent) !important;
+
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 }
 
 .site-sections {
