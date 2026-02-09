@@ -131,3 +131,165 @@ window.addEventListener('resize', updateParallax);
 		});
 	}
 })();
+
+// Action section carousel: same-sized cards with partial next-card preview,
+// previous/next controls, and drag/swipe support.
+(function () {
+	const carousel = document.querySelector('.action__carousel');
+	if (!carousel) return;
+
+	const track = carousel.querySelector('.action__track');
+	const slides = Array.from(carousel.querySelectorAll('.action__card'));
+	const prevButton = carousel.querySelector('.action__arrow--prev');
+	const nextButton = carousel.querySelector('.action__arrow--next');
+	const frame = carousel.closest('.action__frame');
+	const dots = Array.from((frame || document).querySelectorAll('.action__dot'));
+
+	if (!track || slides.length < 2 || !prevButton || !nextButton) return;
+
+	let index = 0;
+	let pointerIsDown = false;
+	let dragStarted = false;
+	let startX = 0;
+	let startOffset = 0;
+	let dragDelta = 0;
+	let suppressClick = false;
+
+	function getGapPx() {
+		const trackStyle = window.getComputedStyle(track);
+		const raw = trackStyle.columnGap || trackStyle.gap || '0px';
+		const value = Number.parseFloat(raw);
+		return Number.isFinite(value) ? value : 0;
+	}
+
+	function getStepWidth() {
+		const slideWidth = slides[0].getBoundingClientRect().width;
+		return slideWidth + getGapPx();
+	}
+
+	function getMinOffset() {
+		const viewportWidth = carousel.getBoundingClientRect().width;
+		const trackWidth = track.scrollWidth;
+		return Math.min(0, viewportWidth - trackWidth);
+	}
+
+	function clampOffset(offset) {
+		const min = getMinOffset();
+		if (offset < min) return min;
+		if (offset > 0) return 0;
+		return offset;
+	}
+
+	function setTrackOffset(offsetPx, animate = true) {
+		track.style.transition = animate ? '' : 'none';
+		track.style.transform = `translateX(${clampOffset(offsetPx)}px)`;
+	}
+
+	function setActiveDot() {
+		dots.forEach((dot, dotIndex) => {
+			const isActive = dotIndex === index;
+			dot.classList.toggle('action__dot--active', isActive);
+			dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+		});
+	}
+
+	function setArrowState() {
+		const atFirst = index === 0;
+		const atLast = index === slides.length - 1;
+		prevButton.disabled = atFirst;
+		nextButton.disabled = atLast;
+		prevButton.setAttribute('aria-hidden', atFirst ? 'true' : 'false');
+		nextButton.setAttribute('aria-hidden', atLast ? 'true' : 'false');
+		carousel.classList.toggle('action__carousel--at-start', atFirst);
+		carousel.classList.toggle('action__carousel--at-end', atLast);
+	}
+
+	function updateTrack(animate = true) {
+		setTrackOffset(-index * getStepWidth(), animate);
+		setActiveDot();
+		setArrowState();
+	}
+
+	function moveBy(delta) {
+		const nextIndex = index + delta;
+		const bounded = Math.min(slides.length - 1, Math.max(0, nextIndex));
+		if (bounded === index) return;
+		index = bounded;
+		updateTrack();
+	}
+
+	prevButton.addEventListener('click', () => moveBy(-1));
+
+	nextButton.addEventListener('click', () => {
+		moveBy(1);
+	});
+
+	dots.forEach((dot, dotIndex) => {
+		dot.addEventListener('click', () => {
+			index = dotIndex;
+			updateTrack();
+		});
+	});
+
+	carousel.addEventListener('pointerdown', (event) => {
+		if (event.button !== 0) return;
+		if (event.target.closest('.action__arrow, .action__dot')) return;
+
+		pointerIsDown = true;
+		dragStarted = false;
+		dragDelta = 0;
+		startX = event.clientX;
+		startOffset = clampOffset(-index * getStepWidth());
+
+		carousel.classList.add('is-dragging');
+		setTrackOffset(startOffset, false);
+		carousel.setPointerCapture(event.pointerId);
+	});
+
+	carousel.addEventListener('pointermove', (event) => {
+		if (!pointerIsDown) return;
+
+		dragDelta = event.clientX - startX;
+		if (Math.abs(dragDelta) > 5) {
+			dragStarted = true;
+		}
+
+		setTrackOffset(startOffset + dragDelta, false);
+	});
+
+	function settleDrag(event) {
+		if (!pointerIsDown) return;
+		pointerIsDown = false;
+		carousel.classList.remove('is-dragging');
+
+		try {
+			carousel.releasePointerCapture(event.pointerId);
+		} catch (error) {
+			// ignore release failures
+		}
+
+		const threshold = Math.max(36, Math.min(84, getStepWidth() * 0.1));
+		if (dragDelta <= -threshold && index < slides.length - 1) {
+			index += 1;
+		} else if (dragDelta >= threshold && index > 0) {
+			index -= 1;
+		}
+
+		suppressClick = dragStarted;
+		track.style.transition = '';
+		updateTrack();
+	}
+
+	carousel.addEventListener('pointerup', settleDrag);
+	carousel.addEventListener('pointercancel', settleDrag);
+
+	carousel.addEventListener('click', (event) => {
+		if (!suppressClick) return;
+		event.preventDefault();
+		event.stopPropagation();
+		suppressClick = false;
+	}, true);
+
+	window.addEventListener('resize', () => updateTrack(false));
+	updateTrack(false);
+})();
