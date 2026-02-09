@@ -1063,3 +1063,46 @@ color: #CA4246;
     display: none;
   }
 }
+
+.site-footer {
+  background: #071734;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.site-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 1.3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: center;
+}
+
+.site-footer__inner span:nth-child(1) {
+  text-align: left;
+}
+
+.site-footer__inner span:nth-child(2) {
+  text-align: center;
+}
+
+.site-footer__inner span:nth-child(3) {
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .site-footer__inner span:nth-child(1),
+  .site-footer__inner span:nth-child(2),
+  .site-footer__inner span:nth-child(3) {
+    text-align: center;
+  }
+}
