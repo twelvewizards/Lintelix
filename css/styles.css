@@ -593,7 +593,7 @@ html { scroll-behavior: smooth; }
 .section-title--small { font-weight: 600; letter-spacing: 0.08em; }
 
 /* Ensure any heading using .section-title shares identical appearance
-   (override local modifiers like .roles__eyebrow or .action__title) */
+   (override local modifiers like .roles__eyebrow and .action__title) */
 .section-title.section-title--feature,
 .roles__eyebrow.section-title,
 .action__title.section-title,
@@ -722,8 +722,7 @@ color: #CA4246;
 
 /* Make primary buttons consistent with the navbar CTA */
 .feature__cta,
-.cta-banner__button,
-.action__button {
+.cta-banner__button {
   background: var(--btn-bg);
   color: var(--btn-color);
   border-radius: var(--btn-radius);
@@ -939,22 +938,79 @@ color: #CA4246;
   gap: 0.6rem;
 }
 
-.action__row {
-  display: grid;
-  grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
-  gap: 0.6rem;
-  align-items: stretch;
+.action__carousel {
+  position: relative;
+  overflow: hidden;
+  --action-left-shift: clamp(8px, 1.2vw, 18px);
+  --action-slide-width: clamp(640px, 64vw, 840px);
+  margin-left: calc(-1 * var(--action-left-shift));
+  width: calc(100% + var(--action-left-shift));
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.action__carousel,
+.action__carousel * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.action__carousel.is-dragging {
+  cursor: grabbing;
+}
+
+.action__carousel::before,
+.action__carousel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(22px, 2.8vw, 40px);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.action__carousel::before {
+  left: 0;
+  background: linear-gradient(90deg, #000000 10%, rgba(0, 0, 0, 0) 100%);
+}
+
+.action__carousel::after {
+  right: 0;
+  background: linear-gradient(270deg, #000000 10%, rgba(0, 0, 0, 0) 100%);
+}
+
+.action__carousel.action__carousel--at-start::before {
+  opacity: 0;
+}
+
+.action__carousel.action__carousel--at-end::after {
+  opacity: 0;
+}
+
+.action__track {
+  display: flex;
+  gap: 0.75rem;
+  transition: transform 340ms cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
 }
 
 .action__card {
+  flex: 0 0 var(--action-slide-width);
+  width: var(--action-slide-width);
   position: relative;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  min-height: 260px;
+  min-height: clamp(320px, 36vw, 470px);
+  aspect-ratio: 16 / 9;
   display: grid;
   align-items: end;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
   background-color: #0b0b0b;
 }
 
@@ -964,14 +1020,10 @@ color: #CA4246;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0) 30%,
-    rgba(0, 0, 0, 0.7) 100%
+    rgba(0, 0, 0, 0.04) 34%,
+    rgba(0, 0, 0, 0.6) 100%
   );
   z-index: 1;
-}
-
-.action__card--wide {
-  min-height: 300px;
 }
 
 .action__card--basement {
@@ -985,73 +1037,105 @@ color: #CA4246;
 .action__content {
   position: relative;
   z-index: 2;
-  padding: 1.2rem 1.2rem 1.1rem;
+  padding: 1.45rem 1.45rem 1.2rem;
   display: grid;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .action__label {
   margin: 0;
-  font-size: clamp(1.05rem, 1.9vw, 1.45rem);
+  font-size: clamp(1.15rem, 2.05vw, 2rem);
   font-weight: 400;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .action__button {
   align-self: start;
   justify-self: start;
-  border: none;
-  background: var(--btn-bg);
-  color: var(--btn-color);
-  padding: 0.35rem 0.8rem;
-  font-size: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(11, 11, 11, 0.72);
+  color: #ffffff;
+  padding: 0.48rem 2rem;
+  font-size: 0.74rem;
   text-transform: none;
-  letter-spacing: 0.04em;
-  border-radius: var(--btn-radius);
+  letter-spacing: 0.03em;
+  border-radius: 4px;
   cursor: pointer;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
   font-weight: 500;
+  box-shadow: none;
+  transition: background 140ms ease, transform 90ms ease;
 }
 
 .action__button:hover {
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(11, 11, 11, 0.88);
+}
+
+.action__button:active {
+  background: rgba(11, 11, 11, 0.92);
+  transform: translateY(1px) scale(0.985);
 }
 
 .action__arrow {
   position: absolute;
-  right: 0.7rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
+  border: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.95);
   display: grid;
   place-items: center;
-  z-index: 2;
+  z-index: 3;
   color: #000000;
-  font-size: 1rem;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  font-size: 1.7rem;
+  font-weight: 700;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 180ms ease;
+}
+
+.action__arrow--prev {
+  left: 0.85rem;
+}
+
+.action__arrow--next {
+  right: 0.85rem;
+}
+
+.action__arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.action__arrow-icon {
+  display: block;
+  transform: translateY(-1px);
 }
 
 .action__dots {
   display: flex;
   justify-content: center;
-  gap: 0.35rem;
-  padding-bottom: 0.15rem;
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
 }
 
 .action__dot {
-  width: 4px;
-  height: 4px;
+  border: none;
+  padding: 0;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
 }
 
 .action__dot--active {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 /* ───────────────────────────── About section ───────────────────────────── */
@@ -1364,11 +1448,76 @@ color: #CA4246;
 }
 
 @media (max-width: 900px) {
-  .action__row {
-    grid-template-columns: 1fr;
+  .action__carousel {
+    --action-left-shift: 0px;
+    --action-slide-width: 100%;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .action__carousel::before,
+  .action__carousel::after {
+    width: clamp(16px, 6vw, 24px);
+  }
+
+  .action__card {
+    min-height: clamp(260px, 62vw, 360px);
   }
 
   .action__arrow {
-    display: none;
+    width: 30px;
+    height: 30px;
+    font-size: 1.45rem;
+  }
+
+  .action__arrow--prev {
+    left: 0.6rem;
+  }
+
+  .action__arrow--next {
+    right: 0.6rem;
+  }
+}
+
+.site-footer {
+  background: #071734;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.site-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 1.3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: center;
+}
+
+.site-footer__inner span:nth-child(1) {
+  text-align: left;
+}
+
+.site-footer__inner span:nth-child(2) {
+  text-align: center;
+}
+
+.site-footer__inner span:nth-child(3) {
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .site-footer__inner span:nth-child(1),
+  .site-footer__inner span:nth-child(2),
+  .site-footer__inner span:nth-child(3) {
+    text-align: center;
   }
 }
