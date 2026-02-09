@@ -941,7 +941,7 @@ color: #CA4246;
 .action__carousel {
   position: relative;
   overflow: hidden;
-  --action-left-shift: clamp(28px, 4vw, 52px);
+  --action-left-shift: clamp(8px, 1.2vw, 18px);
   --action-slide-width: clamp(640px, 64vw, 840px);
   margin-left: calc(-1 * var(--action-left-shift));
   width: calc(100% + var(--action-left-shift));
