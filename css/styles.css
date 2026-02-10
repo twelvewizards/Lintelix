@@ -256,7 +256,7 @@ mark {
 .hero { padding-top: calc(4rem + var(--top-nav-height)); }
 
 .hero {
-  min-height: 700px;
+  min-height: min(100vh, 1000px);
   position: relative;
   display: flex;
   flex-direction: row;
@@ -471,7 +471,6 @@ html { scroll-behavior: smooth; }
   margin: 0;
   color: rgba(255, 255, 255, .6) !important; /* ensure pure white for readability */
   line-height: 1.25;
-  font-weight: 400;
   font-size: 1.4rem;
   text-align: left;
   font-weight: 500;
@@ -1190,27 +1189,28 @@ color: #CA4246;
   padding: 2rem 2.2rem;
   border-radius: 20px;
   background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-  border: 2px solid rgba(255,255,255,0.12);
+  border: 2px solid #199bff6d;
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: 0 16px 48px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
-  max-width: 380px;
-  text-align: center;
+  max-width: 500px;
+  width: min(30vw, 500px);
+  text-align: left;
 }
 
 .about__subtitle {
   margin: 0;
-  font-size: clamp(0.96rem, 1.4vw, 1.08rem);
+  font-size: 1.2rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.75);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 /* Connecting lines */
 .about__line {
   position: absolute;
   width: 2px;
-  height: 700px; /* long enough to reach panels */
+  height: 820px; /* long enough to reach panels */
   background: linear-gradient(180deg, rgba(25,156,255,0.35), rgba(25,156,255,0.06));
   transform-origin: center center;
   z-index: 2;
@@ -1257,48 +1257,25 @@ color: #CA4246;
   box-shadow: 0 16px 44px rgba(2,6,23,0.55), 0 0 0 1px rgba(25,156,255,0.12);
 }
 
-/* small connector dot so lines visually meet the card and always appear attached */
-.about__card::before {
-  content: '';
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #199cff, rgba(110,167,211,0.75));
-  box-shadow: 0 6px 18px rgba(2,6,23,0.45);
-  z-index: 6;
-}
+/* connector dots removed earlier */
 
-.about__card--1::before {
-  left: -9px; /* connector sits on left edge for right-side card */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.about__card--2::before,
-.about__card--3::before {
-  right: -9px; /* connector sits on right edge for left-side cards */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-/* Position cards in circle (0°, 120°, 240°) at 400px radius */
+/* Position cards in circle — clamp horizontal offset so they shrink inward on narrower screens */
 .about__card--1 {
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + 440px), -50%);
+  transform: translate(calc(-50% + clamp(200px, 30vw, 440px)), -50%);
 }
 
 .about__card--2 {
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% - 260px), calc(-50% + 380px));
+  transform: translate(calc(-50% - clamp(120px, 18vw, 260px)), calc(-50% + 320px));
 }
 
 .about__card--3 {
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% - 260px), calc(-50% - 380px));
+  transform: translate(calc(-50% - clamp(120px, 18vw, 260px)), calc(-50% - 320px));
 }
 
 /* CSS-only icons */
@@ -1390,6 +1367,16 @@ color: #CA4246;
   color: rgba(255,255,255,0.92);
 }
 
+/* Underline within about subtitle (pure white) */
+.about__subtitle-underline {
+  color: #ffffff;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  -webkit-text-decoration-color: var(--accent);
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
 .about__card-text {
   margin: 0;
   font-size: 0.92rem;
@@ -1400,50 +1387,53 @@ color: #CA4246;
 
 /* Stats removed — styles deleted per request */
 
-/* ── About section responsive ── */
+/* ── About section responsive: full vertical collapse ── */
 @media (max-width: 900px) {
   .about__circle {
     height: auto;
-    min-height: 1200px;
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 0;
   }
 
-  .about__card--1 {
-    transform: translate(-50%, calc(-50% - 360px));
+  /* hide lines (connectors removed) */
+  .about__line {
+    display: none;
   }
 
-  .about__card--2 {
-    transform: translate(-50%, calc(-50% + 180px));
-  }
-
-  .about__card--3 {
-    transform: translate(-50%, calc(-50% + 540px));
-  }
-
-  .about__line--1 {
-    transform: translate(-50%, calc(-100% - 10px)) rotate(0deg);
-    height: 160px;
-  }
-
-  .about__line--2 {
-    transform: translate(-50%, 10px) rotate(0deg);
-    height: 160px;
-  }
-
-  .about__line--3 {
-    transform: translate(-50%, 10px) rotate(0deg);
-    height: 160px;
-  }
-}
-
-@media (max-width: 600px) {
-  .about__card {
-    width: 90%;
-    max-width: 320px;
-  }
-
+  /* subtitle card goes to top via order */
   .about__center {
-    max-width: 90%;
+    position: static;
+    order: -1;
+    max-width: 100%;
+    width: 100%;
+
+
+    background: none;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+
+    margin: 0px;
+    padding: 20px 5vw;
+
+    text-align: center;
+  }
+
+  /* reset all cards to flow layout */
+  .about__card {
+    position: static;
+    transform: none;
+    width: 100%;
+  }
+
+  .about__card--1,
+  .about__card--2,
+  .about__card--3 {
+    transform: none;
   }
 }
 
@@ -1453,6 +1443,10 @@ color: #CA4246;
     --action-slide-width: 100%;
     margin-left: 0;
     width: 100%;
+  }
+
+  .hero__learn-more {
+    display: none;
   }
 
   .action__carousel::before,
@@ -1477,6 +1471,8 @@ color: #CA4246;
   .action__arrow--next {
     right: 0.6rem;
   }
+
+  
 }
 
 .site-footer {
