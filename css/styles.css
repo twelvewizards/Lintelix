@@ -1261,13 +1261,13 @@ color: #CA4246;
 .about__card--1 {
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + clamp(200px, 30vw, 440px)), -50%);
+  transform: translate(calc(-50% + clamp(200px, 30vw, 440px)), calc(-50% - 70px));
 }
 
 .about__card--2 {
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% - clamp(120px, 18vw, 260px)), calc(-50% + 320px));
+  transform: translate(calc(-50% - clamp(120px, 18vw, 200px)), calc(-50% + 320px));
 }
 
 .about__card--3 {
