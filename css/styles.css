@@ -1449,16 +1449,31 @@ color: #CA4246;
 /* Intro block */
 .about__intro {
   text-align: center;
-  max-width: 740px;
 }
 
 .about__headline {
   margin: 0;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
   font-weight: 500;
-  font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+  font-size: min(4vw, 2.4rem);
   line-height: 1.2;
   color: rgba(255, 255, 255, 0.95);
+}
+
+/* glass pill that wraps the headline and fits the text */
+.about__headline {
+  display: inline-block;
+  padding: 1.1rem 2.2rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
+  border: 1.5px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 20px rgba(2,6,23,0.45);
+  /* never wrap the headline text */
+  overflow-wrap: normal;
+  word-break: keep-all;
+  overflow: visible;
 }
 
 .about__accent {
@@ -1475,6 +1490,7 @@ color: #CA4246;
   height: 900px;
   display: grid;
   place-items: center;
+  margin-bottom: -130px;
 }
 
 /* Center glass card with subtitle */
@@ -1535,19 +1551,14 @@ color: #CA4246;
   position: absolute;
   padding: 1.6rem 1.5rem 1.5rem 1.7rem;
   border-radius: 10px;
-  background: rgba(10, 18, 36, 0.85);
-  border: 2px solid #199bff87;
+  background: color-mix(in srgb, var(--card-accent) 10%, rgb(7, 24, 37));
+  border: 2px solid var(--card-accent);
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   display: grid;
   gap: 0.6rem;
   transition: box-shadow 300ms ease, border-color 300ms ease;
   width: 260px;
   z-index: 5;
-}
-
-.about__card:hover {
-  box-shadow: 0 6px 28px rgba(25,156,255,0.12), 0 2px 12px rgba(0,0,0,0.3);
-  border-left-color: #5bb8ff;
 }
 
 /* connector dots removed earlier */
@@ -1568,7 +1579,7 @@ color: #CA4246;
 .about__card--3 {
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% - clamp(120px, 18vw, 260px)), calc(-50% - 320px));
+  transform: translate(calc(-60% - clamp(120px, 18vw, 350px)), calc(-50% - 320px));
 }
 
 /* Slightly larger outer cards and individual accents */
@@ -1586,7 +1597,6 @@ color: #CA4246;
 
 .about__card--1 {
   --card-accent: #ffb86b; /* warm amber */
-  border-left-color: #ffb86b;
 }
 .about__card--1::before {
   content: '';
@@ -1604,7 +1614,6 @@ color: #CA4246;
 
 .about__card--2 {
   --card-accent: #6be4b0; /* mint/teal */
-  border-left-color: #6be4b0;
 }
 .about__card--2::before {
   content: '';
@@ -1622,7 +1631,6 @@ color: #CA4246;
 
 .about__card--3 {
   --card-accent: #b38cff; /* soft purple */
-  border-left-color: #b38cff;
 }
 .about__card--3::before {
   content: '';
@@ -1664,13 +1672,13 @@ color: #CA4246;
 
 /* Per-card icon background tint + slightly stronger border to match accent */
 .about__card--1 .about__icon {
-  background: rgba(255,184,107,0.08);
+  background: rgba(255,184,107,1);
 }
 .about__card--2 .about__icon {
-  background: rgba(107,228,176,0.08);
+  background: rgba(107,228,176,1);
 }
 .about__card--3 .about__icon {
-  background: rgba(179,140,255,0.08);
+  background: rgba(179,140,255,1);
 }
 
 /* Search / magnifying glass icon */
@@ -1678,49 +1686,23 @@ color: #CA4246;
   content: '';
   width: 12px;
   height: 12px;
-  border: 2px solid #199cff;
+  border: 2px solid black;
   border-radius: 50%;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 45%;
+  left: 45%;
   transform: translate(-50%, -50%);
 }
 .about__icon--search::after {
   content: '';
-  width: 2px;
-  height: 10px;
-  background: #199cff;
-  border-radius: 2px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(7px, 7px) rotate(-45deg);
-}
-
-/* New search icon (fresh implementation for Instant retrieval) */
-.about__icon--search-new::before {
-  content: '';
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--card-accent);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: inset -2px -2px 0 rgba(255,255,255,0.12);
-}
-
-.about__icon--search-new::after {
-  content: '';
   width: 3px;
-  height: 9px;
-  background: var(--card-accent);
+  height: 10px;
+  background: black;
   border-radius: 2px;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(6px, 6px) rotate(-45deg);
+  top: 40%;
+  left: 40%;
+  transform: translate(7px, 5px) rotate(-45deg);
 }
 
 /* Shield / checkmark icon */
@@ -1728,7 +1710,7 @@ color: #CA4246;
   content: '';
   width: 16px;
   height: 19px;
-  border: 2px solid #199cff;
+  border: 2px solid black;
   border-radius: 3px 3px 7px 7px;
   position: absolute;
   top: 50%;
@@ -1739,8 +1721,8 @@ color: #CA4246;
   content: '';
   width: 8px;
   height: 5px;
-  border-left: 2px solid #199cff;
-  border-bottom: 2px solid #199cff;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
   position: absolute;
   top: 48%;
   left: 50%;
@@ -1752,13 +1734,13 @@ color: #CA4246;
   content: '';
   width: 16px;
   height: 3px;
-  background: #199cff;
+  background: black;
   border-radius: 1px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) translateY(-6px);
-  box-shadow: 0 6px 0 rgba(25,156,255,0.7), 0 12px 0 rgba(25,156,255,0.4);
+  box-shadow: 0 6px 0 black, 0 12px 0 black;
 }
 .about__icon--layers::after {
   content: none;
@@ -1819,7 +1801,7 @@ color: #CA4246;
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.6;
-  color: rgba(255,255,255,0.42);
+  color: rgba(255,255,255,0.5);
   font-weight: 400;
   letter-spacing: 0.01em;
 }
@@ -1849,6 +1831,10 @@ color: #CA4246;
     display: none;
   }
 
+  .about__card::before{
+    display: none;;
+  }
+
   /* subtitle card goes to top via order */
   .about__center {
     position: static;
@@ -1866,6 +1852,8 @@ color: #CA4246;
     margin: 0px;
     padding: 20px 5vw;
 
+    margin-top: -30px;
+    margin-bottom: 10px;
     text-align: center;
   }
 
@@ -1877,9 +1865,21 @@ color: #CA4246;
   }
 
   /* reset grid layout for stacked mobile cards */
+  /* keep a small two-column grid so the icon sits to the left on mobile */
   .about__card {
-    display: block;
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    column-gap: 0.9rem;
+    align-items: start;
+  }
+
+  /* ensure icons align to the left inside the grid on small screens */
+  .about__card--1 .about__icon,
+  .about__card--2 .about__icon,
+  .about__card--3 .about__icon {
+    justify-self: start;
+    align-self: center;
+    margin-bottom: 0;
   }
 
   .about__card--1,
