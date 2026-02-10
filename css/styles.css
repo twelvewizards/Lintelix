@@ -1533,23 +1533,21 @@ color: #CA4246;
 /* Feature cards positioned in circle */
 .about__card {
   position: absolute;
-  padding: 1.8rem 1.5rem 1.6rem;
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px) saturate(130%);
-  -webkit-backdrop-filter: blur(12px) saturate(130%);
-  box-shadow: 0 12px 36px rgba(2,6,23,0.5);
+  padding: 1.6rem 1.5rem 1.5rem 1.7rem;
+  border-radius: 10px;
+  background: rgba(10, 18, 36, 0.85);
+  border: 2px solid #199bff87;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   display: grid;
-  gap: 0.7rem;
-  transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
+  gap: 0.6rem;
+  transition: box-shadow 300ms ease, border-color 300ms ease;
   width: 260px;
   z-index: 5;
 }
 
 .about__card:hover {
-  border-color: rgba(25, 156, 255, 0.25);
-  box-shadow: 0 16px 44px rgba(2,6,23,0.55), 0 0 0 1px rgba(25,156,255,0.12);
+  box-shadow: 0 6px 28px rgba(25,156,255,0.12), 0 2px 12px rgba(0,0,0,0.3);
+  border-left-color: #5bb8ff;
 }
 
 /* connector dots removed earlier */
@@ -1573,93 +1571,238 @@ color: #CA4246;
   transform: translate(calc(-50% - clamp(120px, 18vw, 260px)), calc(-50% - 320px));
 }
 
+/* Slightly larger outer cards and individual accents */
+.about__card--1,
+.about__card--2,
+.about__card--3 {
+  width: 300px;
+  padding: 1.9rem 1.6rem 1.6rem 2.4rem;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  column-gap: 0.9rem;
+  align-items: start;
+  --card-accent: #199cff;
+}
+
+.about__card--1 {
+  --card-accent: #ffb86b; /* warm amber */
+  border-left-color: #ffb86b;
+}
+.about__card--1::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 38px;
+  height: 5px;
+  background: #ffb86b;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
+.about__card--2 {
+  --card-accent: #6be4b0; /* mint/teal */
+  border-left-color: #6be4b0;
+}
+.about__card--2::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 38px;
+  height: 5px;
+  background: #6be4b0;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
+.about__card--3 {
+  --card-accent: #b38cff; /* soft purple */
+  border-left-color: #b38cff;
+}
+.about__card--3::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 38px;
+  height: 5px;
+  background: #b38cff;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
 /* CSS-only icons */
 .about__icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, rgba(25,156,255,0.15), rgba(25,156,255,0.06));
-  border: 1px solid rgba(25,156,255,0.18);
+  background: transparent;
+  border: 1.5px solid rgba(25,156,255,0.35);
   position: relative;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.2rem;
+}
+
+/* Ensure icons sit in their grid cell and above the accent bar */
+.about__card--1 .about__icon,
+.about__card--2 .about__icon,
+.about__card--3 .about__icon {
+  margin: 0;
+  z-index: 2;
+  justify-self: center;
+  align-self: center;
+  border-color: var(--card-accent);
+}
+
+/* Per-card icon background tint + slightly stronger border to match accent */
+.about__card--1 .about__icon {
+  background: rgba(255,184,107,0.08);
+}
+.about__card--2 .about__icon {
+  background: rgba(107,228,176,0.08);
+}
+.about__card--3 .about__icon {
+  background: rgba(179,140,255,0.08);
 }
 
 /* Search / magnifying glass icon */
 .about__icon--search::before {
   content: '';
-  width: 14px;
-  height: 14px;
-  border: 2.5px solid #199cff;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #199cff;
   border-radius: 50%;
   position: absolute;
-  top: 11px;
-  left: 11px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .about__icon--search::after {
   content: '';
-  width: 2.5px;
+  width: 2px;
   height: 10px;
   background: #199cff;
   border-radius: 2px;
   position: absolute;
-  bottom: 8px;
-  right: 10px;
-  transform: rotate(-45deg);
+  top: 50%;
+  left: 50%;
+  transform: translate(7px, 7px) rotate(-45deg);
+}
+
+/* New search icon (fresh implementation for Instant retrieval) */
+.about__icon--search-new::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--card-accent);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: inset -2px -2px 0 rgba(255,255,255,0.12);
+}
+
+.about__icon--search-new::after {
+  content: '';
+  width: 3px;
+  height: 9px;
+  background: var(--card-accent);
+  border-radius: 2px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(6px, 6px) rotate(-45deg);
 }
 
 /* Shield / checkmark icon */
 .about__icon--shield::before {
   content: '';
-  width: 18px;
-  height: 22px;
-  border: 2.5px solid #199cff;
-  border-radius: 3px 3px 8px 8px;
+  width: 16px;
+  height: 19px;
+  border: 2px solid #199cff;
+  border-radius: 3px 3px 7px 7px;
   position: absolute;
-  top: 9px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .about__icon--shield::after {
   content: '';
   width: 8px;
   height: 5px;
-  border-left: 2.5px solid #199cff;
-  border-bottom: 2.5px solid #199cff;
-  transform: rotate(-45deg);
+  border-left: 2px solid #199cff;
+  border-bottom: 2px solid #199cff;
   position: absolute;
-  top: 16px;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 /* Layers / stack icon */
 .about__icon--layers::before {
   content: '';
-  width: 20px;
-  height: 4px;
+  width: 16px;
+  height: 3px;
   background: #199cff;
-  border-radius: 2px;
+  border-radius: 1px;
   position: absolute;
-  top: 12px;
-  box-shadow: 0 7px 0 #199cff, 0 14px 0 #199cff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(-6px);
+  box-shadow: 0 6px 0 rgba(25,156,255,0.7), 0 12px 0 rgba(25,156,255,0.4);
 }
 .about__icon--layers::after {
-  content: '';
-  width: 12px;
-  height: 4px;
-  background: rgba(25,156,255,0.5);
-  border-radius: 2px;
-  position: absolute;
-  top: 12px;
-  left: 6px;
-  box-shadow: 0 7px 0 rgba(25,156,255,0.5), 0 14px 0 rgba(25,156,255,0.5);
-  display: none; /* hidden; used only for visual layering if needed */
+  content: none;
+}
+
+/* Slightly bigger icons for the outer cards to match larger text */
+.about__card--1 .about__icon,
+.about__card--2 .about__icon,
+.about__card--3 .about__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
 }
 
 .about__card-title {
   margin: 0;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  font-weight: 500;
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.92);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.95);
+}
+
+/* Larger titles for the outer cards */
+.about__card--1 .about__card-title,
+.about__card--2 .about__card-title,
+.about__card--3 .about__card-title {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.98);
+}
+
+/* Layout: make the paragraph span full width under the icon+title row */
+.about__card--1 .about__card-text,
+.about__card--2 .about__card-text,
+.about__card--3 .about__card-text {
+  grid-column: 1 / -1;
+  margin-top: 0.35rem;
+}
+
+.about__card--1 .about__card-title,
+.about__card--2 .about__card-title,
+.about__card--3 .about__card-title {
+  align-self: center;
+  margin: 0; /* ensure no extra top margin */
 }
 
 /* Underline within about subtitle (pure white) */
@@ -1674,10 +1817,18 @@ color: #CA4246;
 
 .about__card-text {
   margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: rgba(255,255,255,0.48);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.42);
   font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Slightly larger body text for outer cards */
+.about__card--1 .about__card-text,
+.about__card--2 .about__card-text,
+.about__card--3 .about__card-text {
+  font-size: 0.95rem;
 }
 
 /* Stats removed — styles deleted per request */
@@ -1723,6 +1874,12 @@ color: #CA4246;
     position: static;
     transform: none;
     width: 100%;
+  }
+
+  /* reset grid layout for stacked mobile cards */
+  .about__card {
+    display: block;
+    grid-template-columns: 1fr;
   }
 
   .about__card--1,
