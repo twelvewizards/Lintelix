@@ -201,13 +201,13 @@
                 <article class="action__card action__card--basement">
                   <div class="action__content">
                     <h3 class="action__label">The Basement</h3>
-                    <button class="action__button" type="button">Watch Now</button>
+                    <button class="action__button" type="button" data-storyboard="basement" aria-haspopup="dialog">Watch Now</button>
                   </div>
                 </article>
                 <article class="action__card action__card--familiar">
                   <div class="action__content">
                     <h3 class="action__label">Seem Familiar?</h3>
-                    <button class="action__button" type="button">Watch Now</button>
+                    <button class="action__button" type="button" data-storyboard="familiar" aria-haspopup="dialog">Watch Now</button>
                   </div>
                 </article>
               </div>
@@ -229,6 +229,31 @@
         <span>© 2026</span>
       </div>
     </footer>
+    <div class="storyboard-modal" id="storyboard-modal" hidden>
+      <div
+        class="storyboard-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="storyboard-modal-title"
+        tabindex="-1"
+      >
+        <div class="storyboard-modal__header">
+          <h3 class="storyboard-modal__title" id="storyboard-modal-title">Storyboard</h3>
+          <div class="storyboard-modal__controls">
+            <div class="storyboard-modal__view-switch" aria-label="Storyboard view mode">
+              <button class="storyboard-modal__view-btn is-active" type="button" data-view-mode="multi" aria-pressed="true">
+                Multi View
+              </button>
+              <button class="storyboard-modal__view-btn" type="button" data-view-mode="single" aria-pressed="false">
+                Single View
+              </button>
+            </div>
+            <button class="storyboard-modal__close" type="button" aria-label="Close storyboard">&times;</button>
+          </div>
+        </div>
+        <div class="storyboard-modal__content" aria-live="polite"></div>
+      </div>
+    </div>
     <script src="js/main.js"></script>
   </body>
 </html>
