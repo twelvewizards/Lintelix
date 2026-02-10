@@ -647,3 +647,148 @@ window.addEventListener('resize', () => updateTrack(false));
 
 	document.addEventListener('keydown', onDocumentKeydown);
 })();
+
+	// Waitlist modal: opens from any "Join Waitlist" trigger.
+	(function () {
+		const modal = document.querySelector('.waitlist-modal');
+		if (!modal) return;
+
+		const dialog = modal.querySelector('.waitlist-modal__dialog');
+		const closeButton = modal.querySelector('.waitlist-modal__close');
+		const form = modal.querySelector('.waitlist-modal__form');
+		const emailInput = modal.querySelector('#waitlist-email');
+		const triggers = Array.from(document.querySelectorAll('[data-waitlist-trigger]'));
+
+		if (!dialog || !closeButton || triggers.length === 0) return;
+
+		let isOpen = false;
+		let closeTimerId = null;
+		let previousBodyOverflow = '';
+		let returnFocusTo = null;
+
+		function getFocusableElements() {
+			const selectors = [
+				'button:not([disabled])',
+				'[href]',
+				'input:not([disabled])',
+				'select:not([disabled])',
+				'textarea:not([disabled])',
+				'[tabindex]:not([tabindex="-1"])'
+			].join(', ');
+
+			return Array.from(dialog.querySelectorAll(selectors)).filter((element) => {
+				const style = window.getComputedStyle(element);
+				return style.display !== 'none' && style.visibility !== 'hidden';
+			});
+		}
+
+		function openModal(sourceButton) {
+			if (closeTimerId !== null) {
+				window.clearTimeout(closeTimerId);
+				closeTimerId = null;
+			}
+
+			returnFocusTo = sourceButton || document.activeElement;
+
+			if (!isOpen) {
+				previousBodyOverflow = document.body.style.overflow;
+				document.body.style.overflow = 'hidden';
+				document.body.classList.add('waitlist-open');
+				modal.hidden = false;
+				requestAnimationFrame(() => modal.classList.add('is-open'));
+				isOpen = true;
+			} else {
+				modal.classList.add('is-open');
+			}
+
+			window.setTimeout(() => {
+				const preferredFocus = emailInput || dialog;
+				if (preferredFocus && typeof preferredFocus.focus === 'function') {
+					preferredFocus.focus();
+				}
+			}, 0);
+		}
+
+		function closeModal() {
+			if (!isOpen) return;
+			isOpen = false;
+			modal.classList.remove('is-open');
+			document.body.classList.remove('waitlist-open');
+			document.body.style.overflow = previousBodyOverflow;
+
+			closeTimerId = window.setTimeout(() => {
+				modal.hidden = true;
+				closeTimerId = null;
+			}, 180);
+
+			if (returnFocusTo && typeof returnFocusTo.focus === 'function') {
+				window.setTimeout(() => {
+					try {
+						returnFocusTo.focus();
+					} catch (error) {
+						// ignore focus restore issues
+					}
+				}, 0);
+			}
+		}
+
+		function onDocumentKeydown(event) {
+			if (!isOpen) return;
+
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				closeModal();
+				return;
+			}
+
+			if (event.key !== 'Tab') return;
+
+			const focusable = getFocusableElements();
+			if (focusable.length === 0) {
+				event.preventDefault();
+				dialog.focus();
+				return;
+			}
+
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+			const active = document.activeElement;
+
+			if (event.shiftKey) {
+				if (active === first || !dialog.contains(active)) {
+					event.preventDefault();
+					last.focus();
+				}
+				return;
+			}
+
+			if (active === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		}
+
+		triggers.forEach((trigger) => {
+			trigger.addEventListener('click', (event) => {
+				event.preventDefault();
+				openModal(trigger);
+			});
+		});
+
+		closeButton.addEventListener('click', closeModal);
+
+		modal.addEventListener('click', (event) => {
+			if (event.target === modal) {
+				closeModal();
+			}
+		});
+
+		if (form) {
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				closeModal();
+			});
+		}
+
+		document.addEventListener('keydown', onDocumentKeydown);
+	})();

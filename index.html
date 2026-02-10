@@ -18,7 +18,7 @@
           <a class="top-nav__link" href="#Video Demo">Video Demo</a>
           <a class="top-nav__link" href="#Roles">Roles</a>
           <a class="top-nav__link" href="#Advantages">Advantages</a>
-          <a class="top-nav__cta" href="#waitlist" id="join-waitlist">Join Waitlist</a>
+          <a class="top-nav__cta" href="#waitlist" id="join-waitlist" data-waitlist-trigger>Join Waitlist</a>
         </div>
       </div>
     </nav>
@@ -45,7 +45,7 @@
       </div>
       <div class="hero__actions" aria-hidden="false">
         <a href="#learn-more-target" class="hero__learn-more">Learn more</a>
-        <a href="#waitlist" class="top-nav__cta hero__waitlist">Join Waitlist<span class="feature__cta-icon" aria-hidden="true"></span></a>
+        <a href="#waitlist" class="top-nav__cta hero__waitlist" data-waitlist-trigger>Join Waitlist<span class="feature__cta-icon" aria-hidden="true"></span></a>
       </div>
     </header>
     <main class="site-sections">
@@ -229,6 +229,38 @@
         <span>© 2026</span>
       </div>
     </footer>
+    <div class="waitlist-modal" id="waitlist-modal" hidden>
+      <div
+        class="waitlist-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="waitlist-title"
+        aria-describedby="waitlist-desc"
+        tabindex="-1"
+      >
+        <button class="waitlist-modal__close" type="button" aria-label="Close waitlist">&times;</button>
+        <div class="waitlist-modal__content">
+          <p class="waitlist-modal__eyebrow">Asset Memory</p>
+          <h3 class="waitlist-modal__title" id="waitlist-title">Join Waitlist</h3>
+          <p class="waitlist-modal__description" id="waitlist-desc">
+            There’s a lot of interest right now. Join the waitlist to learn more and get priority access.
+          </p>
+          <form class="waitlist-modal__form" autocomplete="on">
+            <label class="waitlist-modal__label" for="waitlist-email">Work email</label>
+            <input
+              class="waitlist-modal__input"
+              id="waitlist-email"
+              name="email"
+              type="email"
+              placeholder="you@company.com"
+              autocomplete="email"
+              required
+            />
+            <button class="waitlist-modal__submit" type="submit">Join Waitlist</button>
+          </form>
+        </div>
+      </div>
+    </div>
     <div class="storyboard-modal" id="storyboard-modal" hidden>
       <div
         class="storyboard-modal__dialog"
