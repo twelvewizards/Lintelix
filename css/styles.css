@@ -746,84 +746,138 @@ color: #CA4246;
 
 .roles {
   background: transparent;
-  padding: 3rem 1.5rem;
+  padding: 3.5rem 1.5rem 4rem;
 }
 
 .roles__container {
   max-width: var(--content-max-width);
   margin: 0 auto;
   display: grid;
-  gap: 2.5rem;
+  gap: 2rem;
+}
+
+.roles__header {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  text-align: center;
 }
 
 .roles__eyebrow {
   margin: 0;
   text-align: center;
   color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
-  letter-spacing: 0.32em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.roles__subtitle {
+  margin: 0;
+  max-width: 56ch;
+  color: rgba(226, 240, 255, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.roles__divider {
+  width: min(420px, 70%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  position: relative;
+  margin-top: 0.4rem;
+}
+
+.roles__divider::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #199cff;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 6px rgba(25, 156, 255, 0.12);
+  animation: roles-pulse 3.6s ease-in-out infinite;
 }
 
 .roles__grid {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  align-items: stretch;
 }
 
 .roles__card {
-  background: #ffffff;
-  color: #111827;
-  border-radius: 12px;
-  padding: 1.6rem 1.4rem 1.8rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+  color: #0b1220;
+  border-radius: 16px;
+  padding: 1.6rem 1.6rem 1.9rem;
   display: grid;
-  gap: 0.9rem;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  gap: 0.85rem;
+  box-shadow: 0 18px 38px rgba(9, 18, 35, 0.25);
+  border: 1px solid rgba(8, 20, 39, 0.08);
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
-  text-align: center;
+  text-align: left;
   font-weight: 400;
+  transform: translateY(var(--card-offset, 0));
+  transition: transform 200ms ease, box-shadow 220ms ease, border-color 200ms ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .roles__card h3 {
   margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.95rem;
-  font-weight: 400;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0b1220;
 }
 
 .roles__card p {
   margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.5;
-  text-align: center;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  text-align: left;
   font-weight: 400;
+  color: #23324b;
+  max-width: 34ch;
+}
+
+.roles__lead {
+  font-weight: 600;
+  color: #0b1a33;
+  background: linear-gradient(transparent 62%, var(--role-accent-soft, rgba(25, 156, 255, 0.18)) 62%);
 }
 
 .roles__label {
   text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  color: #111827;
-  font-weight: 400;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: rgba(45, 59, 82, 0.55);
+  font-weight: 500;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
   width: min(260px, 100%);
-  margin: 0 auto;
+  margin: 0;
   text-align: left;
 }
 
 .roles__card ul {
-  margin: 0;
+  margin: 0.2rem 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 0.45rem;
-  font-size: 0.85rem;
-  font-weight: 300;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 400;
   text-align: left;
   justify-items: start;
   width: min(260px, 100%);
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
+  color: rgba(35, 50, 75, 0.78);
 }
 
 .roles__card li {
@@ -831,15 +885,71 @@ color: #CA4246;
   align-items: center;
   justify-content: flex-start;
   gap: 0.45rem;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .roles__card li::before {
   content: "";
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: url("../assets/img/sheild_tick.png") center / contain no-repeat;
-  flex: 0 0 14px;
+  flex: 0 0 12px;
+  opacity: 0.6;
+}
+
+.roles__accent {
+  width: 46px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--role-accent, #6ea7d3);
+  box-shadow: 0 8px 16px rgba(10, 22, 40, 0.12);
+  transform-origin: left center;
+  transition: transform 220ms ease;
+}
+
+.roles__card:hover {
+  box-shadow: 0 26px 50px rgba(9, 18, 35, 0.28);
+  border-color: rgba(25, 156, 255, 0.25);
+  transform: translateY(calc(var(--card-offset, 0) - 6px));
+}
+
+.roles__card:hover .roles__accent {
+  transform: scaleX(1.08);
+}
+
+.roles__card--highlight {
+  border-color: rgba(91, 191, 165, 0.35);
+  background: linear-gradient(180deg, #ffffff 0%, #f1f7f6 100%);
+}
+
+.roles__card:nth-child(1) { --card-offset: 0px; }
+.roles__card:nth-child(2) { --card-offset: 0px; }
+.roles__card:nth-child(3) { --card-offset: 0px; }
+.roles__card:nth-child(4) { --card-offset: 0px; }
+
+.roles__card--delivery {
+  --role-accent: #5b8dd8;
+  --role-accent-soft: rgba(91, 141, 216, 0.18);
+}
+
+.roles__card--compliance {
+  --role-accent: #5bbfa5;
+  --role-accent-soft: rgba(91, 191, 165, 0.18);
+}
+
+.roles__card--operations {
+  --role-accent: #8ea85f;
+  --role-accent-soft: rgba(142, 168, 95, 0.18);
+}
+
+.roles__card--owners {
+  --role-accent: #b58b5c;
+  --role-accent-soft: rgba(181, 139, 92, 0.18);
+}
+
+@keyframes roles-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
 }
 
 .cta-banner {
@@ -1229,7 +1339,7 @@ color: #CA4246;
 
 .waitlist-modal__title {
   margin: 0;
-  font-family: "Sora", "Segoe UI", sans-serif;
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
   font-size: clamp(2rem, 4vw, 2.6rem);
   font-weight: 600;
   color: #ffffff;
