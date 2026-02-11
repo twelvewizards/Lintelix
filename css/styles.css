@@ -825,6 +825,14 @@ color: #CA4246;
   }
 }
 
+/* When stacked into a single column, remove stagger offsets so cards sit flush */
+@media (max-width: 520px) {
+  .roles__card {
+    --card-offset: 0;
+    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  }
+}
+
 .roles__card {
   --tilt-x: 0deg;
   --tilt-y: 0deg;
@@ -948,6 +956,13 @@ color: #CA4246;
 .roles__card:nth-child(2) { --card-offset: -14px; }
 .roles__card:nth-child(3) { --card-offset: 14px; }
 .roles__card:nth-child(4) { --card-offset: -14px; }
+
+/* Override stagger offsets on single-column layouts to keep spacing even. */
+@media (max-width: 520px) {
+  .roles__grid .roles__card {
+    --card-offset: 0;
+  }
+}
 
 .roles__card--delivery {
   --role-accent: #5b8dd8;
