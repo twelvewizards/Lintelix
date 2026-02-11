@@ -311,7 +311,7 @@ window.addEventListener('resize', () => updateTrack(false));
 	const closeButton = modal.querySelector('.storyboard-modal__close');
 	const viewButtons = Array.from(modal.querySelectorAll('.storyboard-modal__view-btn'));
 	const triggerButtons = Array.from(document.querySelectorAll('.action__button[data-storyboard]'));
-	const ENABLE_SINGLE_VIEW = false;
+	const ENABLE_SINGLE_VIEW = true;
 
 	if (!dialog || !titleElement || !content || !closeButton || viewButtons.length === 0 || triggerButtons.length === 0) {
 		return;
@@ -471,16 +471,28 @@ window.addEventListener('resize', () => updateTrack(false));
 		const single = document.createElement('article');
 		single.className = 'storyboard-modal__single';
 
-		const meta = document.createElement('div');
-		meta.className = 'storyboard-modal__single-meta';
+		const stage = document.createElement('div');
+		stage.className = 'storyboard-modal__single-stage';
+
+		const prev = document.createElement('button');
+		prev.type = 'button';
+		prev.className = 'storyboard-modal__single-nav storyboard-modal__single-nav--prev';
+		prev.dataset.singleNav = 'prev';
+		prev.textContent = 'Previous';
+		prev.disabled = activeFrameIndex <= 0;
+
+		const main = document.createElement('div');
+		main.className = 'storyboard-modal__single-main';
+
+		const metaRow = document.createElement('div');
+		metaRow.className = 'storyboard-modal__single-meta-row';
 		const scene = document.createElement('span');
-		scene.textContent = frame.scene;
+		scene.className = 'storyboard-modal__single-scene';
+		scene.textContent = frame.scene || ' ';
 		const shot = document.createElement('span');
-		shot.textContent = frame.shot;
-		const index = document.createElement('span');
-		index.className = 'storyboard-modal__single-index';
-		index.textContent = `Frame ${activeFrameIndex + 1} of ${frameCount}`;
-		meta.append(scene, shot, index);
+		shot.className = 'storyboard-modal__single-shot';
+		shot.textContent = frame.shot || ' ';
+		metaRow.append(scene, shot);
 
 		const frameWrap = document.createElement('div');
 		frameWrap.className = 'storyboard-modal__single-frame';
@@ -491,15 +503,26 @@ window.addEventListener('resize', () => updateTrack(false));
 
 		const caption = document.createElement('p');
 		caption.className = 'storyboard-modal__single-caption';
-		caption.textContent = frame.caption;
+		caption.textContent = frame.caption || ' ';
 
-		single.append(meta, frameWrap, caption);
+		main.append(metaRow, frameWrap, caption);
+
+		const next = document.createElement('button');
+		next.type = 'button';
+		next.className = 'storyboard-modal__single-nav storyboard-modal__single-nav--next';
+		next.dataset.singleNav = 'next';
+		next.textContent = 'Next';
+		next.disabled = activeFrameIndex >= frameCount - 1;
+
+		stage.append(prev, main, next);
+		single.append(stage);
 		setModalContent(single);
 	}
 
 	function renderContent() {
 		const story = getActiveStory();
 		if (!story) return;
+		content.classList.toggle('storyboard-modal__content--single', currentMode === 'single');
 		if (currentMode === 'single') {
 			renderSingleView(story);
 			return;
@@ -640,8 +663,22 @@ window.addEventListener('resize', () => updateTrack(false));
 	});
 
 	content.addEventListener('click', (event) => {
-		if (!ENABLE_SINGLE_VIEW) return;
-		if (currentMode !== 'multi') return;
+		if (currentMode === 'single') {
+			const navButton = event.target.closest('[data-single-nav]');
+			if (!navButton) return;
+			if (navButton.dataset.singleNav === 'prev') {
+				activeFrameIndex -= 1;
+			} else if (navButton.dataset.singleNav === 'next') {
+				activeFrameIndex += 1;
+			}
+			const activeStory = getActiveStory();
+			const frameCount = activeStory ? activeStory.frames.length : 0;
+			activeFrameIndex = clampFrameIndex(activeFrameIndex, frameCount);
+			renderContent();
+			return;
+		}
+
+		if (!ENABLE_SINGLE_VIEW || currentMode !== 'multi') return;
 		const tile = event.target.closest('.storyboard-tile');
 		if (!tile) return;
 		const activeStory = getActiveStory();

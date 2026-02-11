@@ -1565,6 +1565,7 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__view-btn:focus-visible,
 .storyboard-modal__close:focus-visible,
+.storyboard-modal__single-nav:focus-visible,
 .storyboard-tile:focus-visible {
   outline: 2px solid rgba(167, 218, 255, 0.85);
   outline-offset: 2px;
@@ -1572,6 +1573,15 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__close {
   display: none;
+  border: 0;
+  background: transparent;
+  color: rgba(231, 244, 255, 0.86);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
 }
 
 .storyboard-modal__content {
@@ -1582,6 +1592,11 @@ body.waitlist-open .site-footer {
   overscroll-behavior: contain;
   position: relative;
   z-index: 1;
+}
+
+.storyboard-modal__content--single {
+  overflow: hidden;
+  padding-bottom: clamp(0.65rem, 1.4vw, 1rem);
 }
 
 .storyboard-modal__content::-webkit-scrollbar {
@@ -1655,33 +1670,86 @@ body.waitlist-open .site-footer {
 }
 
 .storyboard-modal__single {
+  min-height: 100%;
   display: grid;
-  gap: 0.6rem;
+  align-items: stretch;
 }
 
-.storyboard-modal__single-meta {
-  display: flex;
+.storyboard-modal__single-stage {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(0, 860px) minmax(110px, 1fr);
+  gap: clamp(0.35rem, 0.9vw, 0.8rem);
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.72rem;
-  color: rgba(226, 240, 255, 0.86);
-  font-size: 0.75rem;
+  align-content: center;
+  min-height: 100%;
+  width: 100%;
 }
 
-.storyboard-modal__single-index {
-  margin-left: auto;
-  color: rgba(226, 240, 255, 0.72);
-  font-size: 0.7rem;
+.storyboard-modal__single-main {
+  display: grid;
+  grid-template-rows: auto auto minmax(2.6em, auto);
+  gap: 0.55rem;
+  justify-items: stretch;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.storyboard-modal__single-meta-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  color: rgba(234, 246, 255, 0.96);
+  font-size: clamp(1rem, 1.55vw, 1.95rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  width: min(100%, 900px);
+  margin: 0 auto;
+}
+
+.storyboard-modal__single-scene {
+  justify-self: start;
+  padding-left: clamp(0.55rem, 1vw, 0.95rem);
+}
+
+.storyboard-modal__single-shot {
+  justify-self: end;
+  padding-right: clamp(0.55rem, 1vw, 0.95rem);
+}
+
+.storyboard-modal__single-nav {
+  border: none;
+  background: transparent;
+  color: rgba(235, 246, 255, 0.9);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.35rem);
+  font-weight: 560;
+  cursor: pointer;
+  padding: 0.3rem 0.2rem;
+}
+
+.storyboard-modal__single-nav--prev {
+  justify-self: end;
+}
+
+.storyboard-modal__single-nav--next {
+  justify-self: start;
+}
+
+.storyboard-modal__single-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
 }
 
 .storyboard-modal__single-frame {
   width: 100%;
-  max-width: 920px;
-  border-radius: 4px;
+  max-width: 860px;
+  border-radius: 2px;
   overflow: hidden;
   border: 1px solid rgba(196, 225, 249, 0.34);
   background: #071324;
   aspect-ratio: 16 / 9;
+  margin: 0 auto;
 }
 
 .storyboard-modal__single-frame img {
@@ -1693,13 +1761,20 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__single-caption {
   margin: 0;
-  font-size: 0.78rem;
-  color: rgba(235, 246, 255, 0.82);
+  text-align: center;
+  font-size: clamp(1rem, 1.1vw, 1.3rem);
+  color: rgba(235, 246, 255, 0.95);
+  min-height: 1.35em;
 }
 
 @media (max-width: 1080px) {
   .storyboard-modal__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .storyboard-modal__close {
+    display: inline-grid;
+    place-items: center;
   }
 }
 
@@ -1731,8 +1806,14 @@ body.waitlist-open .site-footer {
     gap: 0.85rem;
   }
 
-  .storyboard-modal__single-index {
-    margin-left: 0;
+  .storyboard-modal__single-stage {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .storyboard-modal__single-nav--prev,
+  .storyboard-modal__single-nav--next {
+    justify-self: center;
   }
 
 }
