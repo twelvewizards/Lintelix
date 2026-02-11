@@ -1,4 +1,4 @@
-@font-face {
+﻿@font-face {
   font-family: "Sora";
   src: url("../assets/fonts/Sora/static/Sora-Regular.ttf") format("truetype");
   font-weight: 400;
@@ -781,15 +781,17 @@ color: #CA4246;
 }
 
 .roles__divider {
+  --divider-x: 0px;
+  display: block;
   width: min(420px, 70%);
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
   position: relative;
+  overflow: visible;
   margin-top: 0.4rem;
 }
 
-.roles__divider::after {
-  content: "";
+.roles__divider-handle {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -797,9 +799,26 @@ color: #CA4246;
   background: #199cff;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(calc(-50% + var(--divider-x)), -50%);
   box-shadow: 0 0 0 6px rgba(25, 156, 255, 0.12);
   animation: roles-pulse 3.6s ease-in-out infinite;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.roles__divider--ready {
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+.roles__divider--ready .roles__divider-handle {
+  pointer-events: auto;
+  cursor: ew-resize;
+}
+
+.roles__divider--dragging .roles__divider-handle {
+  cursor: grabbing;
+  animation-play-state: paused;
 }
 
 .roles__grid {
@@ -985,8 +1004,14 @@ color: #CA4246;
 }
 
 @keyframes roles-pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+  0%, 100% {
+    opacity: 0.9;
+    box-shadow: 0 0 0 6px rgba(25, 156, 255, 0.12);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 10px rgba(25, 156, 255, 0.08);
+  }
 }
 
 .cta-banner {
@@ -1173,11 +1198,11 @@ color: #CA4246;
 }
 
 .action__card--basement {
-  background: url("../assets/img/TheBasement.png") center / cover no-repeat;
+  background: url("../assets/img/the_basement/TheBasement.png") center / cover no-repeat;
 }
 
 .action__card--familiar {
-  background: url("../assets/img/seemsfamiliar.png") center / cover no-repeat;
+  background: url("../assets/img/seems_familiar/seemsfamiliar.png") center / cover no-repeat;
 }
 
 .action__content {
@@ -1284,7 +1309,7 @@ color: #CA4246;
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* ───────────────────────────── About section ───────────────────────────── */
+/* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ About section 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .waitlist-modal[hidden] {
   display: none;
 }
@@ -1476,7 +1501,13 @@ body.waitlist-open .site-footer {
   height: min(80vh, 780px);
   border-radius: 20px;
   border: 1px solid rgba(181, 221, 255, 0.28);
-  background-color: rgba(41, 80, 108, 0.42);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 16, 28, 0.92) 0%,
+      rgba(24, 49, 72, 0.84) 54%,
+      rgba(41, 80, 108, 0.76) 100%
+    );
   box-shadow:
     0 18px 48px rgba(0, 0, 0, 0.44),
     inset 0 1px 0 rgba(255, 255, 255, 0.14);
@@ -1492,11 +1523,13 @@ body.waitlist-open .site-footer {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
-  background-size: 0.5% 0.5%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 96px 96px;
   background-repeat: repeat;
-  mix-blend-mode: multiply;
+  mix-blend-mode: soft-light;
   z-index: 0;
+  opacity: 0.12;
+  filter: contrast(140%);
 }
 
 .storyboard-modal__dialog:focus {
@@ -1572,6 +1605,7 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__view-btn:focus-visible,
 .storyboard-modal__close:focus-visible,
+.storyboard-modal__single-nav:focus-visible,
 .storyboard-tile:focus-visible {
   outline: 2px solid rgba(167, 218, 255, 0.85);
   outline-offset: 2px;
@@ -1579,6 +1613,15 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__close {
   display: none;
+  border: 0;
+  background: transparent;
+  color: rgba(231, 244, 255, 0.86);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
 }
 
 .storyboard-modal__content {
@@ -1589,6 +1632,11 @@ body.waitlist-open .site-footer {
   overscroll-behavior: contain;
   position: relative;
   z-index: 1;
+}
+
+.storyboard-modal__content--single {
+  overflow: hidden;
+  padding-bottom: clamp(0.65rem, 1.4vw, 1rem);
 }
 
 .storyboard-modal__content::-webkit-scrollbar {
@@ -1662,33 +1710,86 @@ body.waitlist-open .site-footer {
 }
 
 .storyboard-modal__single {
+  min-height: 100%;
   display: grid;
-  gap: 0.6rem;
+  align-items: stretch;
 }
 
-.storyboard-modal__single-meta {
-  display: flex;
+.storyboard-modal__single-stage {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(0, 860px) minmax(110px, 1fr);
+  gap: clamp(0.35rem, 0.9vw, 0.8rem);
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.72rem;
-  color: rgba(226, 240, 255, 0.86);
-  font-size: 0.75rem;
+  align-content: center;
+  min-height: 100%;
+  width: 100%;
 }
 
-.storyboard-modal__single-index {
-  margin-left: auto;
-  color: rgba(226, 240, 255, 0.72);
-  font-size: 0.7rem;
+.storyboard-modal__single-main {
+  display: grid;
+  grid-template-rows: auto auto minmax(2.6em, auto);
+  gap: 0.55rem;
+  justify-items: stretch;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.storyboard-modal__single-meta-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  color: rgba(234, 246, 255, 0.96);
+  font-size: clamp(1rem, 1.55vw, 1.95rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  width: min(100%, 900px);
+  margin: 0 auto;
+}
+
+.storyboard-modal__single-scene {
+  justify-self: start;
+  padding-left: clamp(0.55rem, 1vw, 0.95rem);
+}
+
+.storyboard-modal__single-shot {
+  justify-self: end;
+  padding-right: clamp(0.55rem, 1vw, 0.95rem);
+}
+
+.storyboard-modal__single-nav {
+  border: none;
+  background: transparent;
+  color: rgba(235, 246, 255, 0.9);
+  font-family: "Zalando Sans", "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.35rem);
+  font-weight: 560;
+  cursor: pointer;
+  padding: 0.3rem 0.2rem;
+}
+
+.storyboard-modal__single-nav--prev {
+  justify-self: end;
+}
+
+.storyboard-modal__single-nav--next {
+  justify-self: start;
+}
+
+.storyboard-modal__single-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
 }
 
 .storyboard-modal__single-frame {
   width: 100%;
-  max-width: 920px;
-  border-radius: 4px;
+  max-width: 860px;
+  border-radius: 2px;
   overflow: hidden;
   border: 1px solid rgba(196, 225, 249, 0.34);
   background: #071324;
   aspect-ratio: 16 / 9;
+  margin: 0 auto;
 }
 
 .storyboard-modal__single-frame img {
@@ -1700,13 +1801,20 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__single-caption {
   margin: 0;
-  font-size: 0.78rem;
-  color: rgba(235, 246, 255, 0.82);
+  text-align: center;
+  font-size: clamp(1rem, 1.1vw, 1.3rem);
+  color: rgba(235, 246, 255, 0.95);
+  min-height: 1.35em;
 }
 
 @media (max-width: 1080px) {
   .storyboard-modal__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .storyboard-modal__close {
+    display: inline-grid;
+    place-items: center;
   }
 }
 
@@ -1738,8 +1846,14 @@ body.waitlist-open .site-footer {
     gap: 0.85rem;
   }
 
-  .storyboard-modal__single-index {
-    margin-left: 0;
+  .storyboard-modal__single-stage {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .storyboard-modal__single-nav--prev,
+  .storyboard-modal__single-nav--next {
+    justify-self: center;
   }
 
 }
@@ -1874,7 +1988,7 @@ body.waitlist-open .site-footer {
 
 /* connector dots removed earlier */
 
-/* Position cards in circle — clamp horizontal offset so they shrink inward on narrower screens */
+/* Position cards in circle 鈥?clamp horizontal offset so they shrink inward on narrower screens */
 .about__card--1 {
   top: 50%;
   left: 50%;
@@ -2124,9 +2238,9 @@ body.waitlist-open .site-footer {
   font-size: 0.95rem;
 }
 
-/* Stats removed — styles deleted per request */
+/* Stats removed 鈥?styles deleted per request */
 
-/* ── About section responsive: full vertical collapse ── */
+/* 鈹€鈹€ About section responsive: full vertical collapse 鈹€鈹€ */
 @media (max-width: 900px) {
   .about__circle {
     height: auto;
@@ -2280,3 +2394,5 @@ body.waitlist-open .site-footer {
     text-align: center;
   }
 }
+
+

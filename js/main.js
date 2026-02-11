@@ -311,59 +311,71 @@ window.addEventListener('resize', () => updateTrack(false));
 	const closeButton = modal.querySelector('.storyboard-modal__close');
 	const viewButtons = Array.from(modal.querySelectorAll('.storyboard-modal__view-btn'));
 	const triggerButtons = Array.from(document.querySelectorAll('.action__button[data-storyboard]'));
-	const ENABLE_SINGLE_VIEW = false;
+	const ENABLE_SINGLE_VIEW = true;
 
 	if (!dialog || !titleElement || !content || !closeButton || viewButtons.length === 0 || triggerButtons.length === 0) {
 		return;
 	}
 
-	const basementCaptions = [
-		'Inspecting archived records in low light',
-		'Tracking the missing maintenance log',
-		'Cross-checking service tags and labels',
-		'Confirming historical approval stamps',
-		'Pinpointing installation timeline conflicts',
-		'Matching evidence to reference drawing',
-		'Validating source against latest revision',
-		'Linking findings to original submission',
-		'Reconstructing sequence of changes',
-		'Flagging unresolved compliance notes',
-		'Preparing cited response for review',
-		'Closing the loop with source attached'
+	const basementShotlistFrames = [
+		{ scene: 'Scene 1', shot: 'Shot 1', caption: 'INT. CU - Straight angle. JOHN. "Great news Dave.."' },
+		{ scene: 'Scene 1', shot: 'Shot 2', caption: 'INT. CU - Straight angle. DAVE. "Great!"' },
+		{ scene: 'Scene 1', shot: 'Shot 3', caption: 'INT. MCU - OTS Dave, of JOHN. "All they need from you..."' },
+		{ scene: 'Scene 1', shot: 'Shot 4', caption: 'INT. MCU - OTS John, of DAVE. Reacting to John.' },
+		{ scene: 'Scene 1', shot: 'Shot 5', caption: 'INT. ECU - JOHN\'s face. "The basement."' },
+		{ scene: 'Scene 1', shot: 'Shot 6', caption: 'INT. ECU - DAVE\'s mouth. "The basement?"' },
+		{ scene: 'Scene 1', shot: 'Shot 7', caption: 'INT. ECU - JOHN\'s mouth. "The basement!"' },
+		{ scene: 'Scene 2', shot: 'Shot 1', caption: 'INT. WS - Elevator doors open, Dave stands holding flashlight. ZOOM OUT.' },
+		{ scene: 'Scene 2', shot: 'Shot 2', caption: 'INT. MCU - OTS, Dave walks into the basement, revealing boxes everywhere.' },
+		{ scene: 'Scene 2', shot: 'Shot 3', caption: 'INT. MCU - Dave begins searching through boxes.' },
+		{ scene: 'Scene 2', shot: 'Shot 4', caption: 'INT. CU - Dave\'s beard has grown, pile of papers behind.' },
+		{ scene: 'Scene 2', shot: 'Shot 5', caption: 'INT. WS - Dave sits on floor searching. His hair is greying, pile larger.' },
+		{ scene: 'Scene 2', shot: 'Shot 6', caption: 'INT. CU - Dave\'s face lights up, he found it.' },
+		{ scene: 'Scene 3', shot: 'Shot 1', caption: 'INT. WS - Elevator doors open. Dave runs out excited "I found it!". He runs up to camera, then a look of disappointment and realization on his face.' },
+		{ scene: 'Scene 3', shot: 'Shot 1 (CONT)', caption: 'INT. CU - Shot 1. CONT.' },
+		{ scene: 'Scene 3', shot: 'Shot 2', caption: 'INT. WS - OTS Dave, Reveal dark empty foyer. No one is there. It\'s night, janitor in background. Track out slowly from Dave, Dave drops paper.' },
+		{ scene: 'Scene 3', shot: 'Shot 2 (CONT)', caption: 'INT. WS - Shot 2. CONT.' },
+		{ scene: 'Scene 4', shot: 'Shot 1', caption: 'INT. MS - Man on a computer, drinking a cup of coffee, using Asset Memory.' }
 	];
 
-	const familiarCaptions = [
-		'Searching scattered handover folders',
-		'Comparing disconnected document sets',
-		'Tracing who approved what and when',
-		'Finding the root source for a claim',
-		'Locating evidence during time pressure',
-		'Checking if updates reached every team',
-		'Resolving mismatched file versions',
-		'Identifying data gaps before audits',
-		'Linking operations queries to evidence',
-		'Reviewing key decisions by timeline',
-		'Building a consistent project memory',
-		'Sharing one clear answer with source'
+	const familiarShotlistFrames = [
+		{ scene: 'Scene 1', shot: 'Shot 1', caption: 'INT. CU - Straight angle of a construction manager\'s face. "The client is asking..."' },
+		{ scene: 'Scene 1', shot: 'Shot 2', caption: 'INT. MS - Camera trucks further into the office, starting from the operations manager.' },
+		{ scene: 'Scene 1', shot: 'Shot 3', caption: 'INT. MCU - Focus on building managers face. "were not going to make the due date!"' },
+		{ scene: 'Scene 1', shot: 'Shot 4', caption: 'INT. WS - Scene zooms out, showing the whole interior, the presenter walks into frame while everything is frozen.' },
+		{ scene: 'Scene 1', shot: 'Shot 5', caption: 'INT. CU - The presenter\'s face is framed with an open filing cabinet.' },
+		{ scene: 'Scene 1', shot: 'Shot 6', caption: 'INT. CU - Focus on the computer monitor; the presenter\'s head is poking out.' },
+		{ scene: 'Scene 1', shot: 'Shot 7', caption: 'INT. WS - Shows the whole office, the presenter walks in.' },
+		{ scene: 'Scene 1', shot: 'Shot 8', caption: 'INT. WS - The entire office is calm, and everyone is working diligently.' },
+		{ scene: 'Scene 1', shot: 'Shot 9', caption: 'INT. WS - Operations manager diligently working at her desk. "Hey, Sarah is asking..."' },
+		{ scene: 'Scene 1', shot: 'Shot 10', caption: 'INT. OTS - Operations manager typing on her keyboard and using asset memory.' },
+		{ scene: 'Scene 1', shot: 'Shot 11', caption: 'INT. MS - Frames the managers looking at the same screen. "so that\'s why it was rerouted"' },
+		{ scene: 'Scene 1', shot: 'Shot 12', caption: 'INT. MS - Presenter on the left of the frame with the managers in the background. "Asset memory retains..."' }
 	];
 
-	function buildFrames(imagePath, captions) {
-		return captions.map((caption, index) => ({
-			scene: `Scene ${Math.floor(index / 4) + 1}`,
-			shot: `Shot ${(index % 4) + 1}`,
-			caption,
-			image: imagePath
-		}));
+	function withStoryboardImages(folderName, startNumber, frames, endNumber = null) {
+		const lastNumber = Number.isFinite(endNumber) ? endNumber : (startNumber + frames.length - 1);
+		const mapped = [];
+
+		for (let imageNumber = startNumber; imageNumber <= lastNumber; imageNumber += 1) {
+			const frame = frames[imageNumber - startNumber] || { scene: '', shot: '', caption: '' };
+			mapped.push({
+				...frame,
+				image: `assets/img/${folderName}/${imageNumber}.jpg`
+			});
+		}
+
+		return mapped;
 	}
 
 	const stories = {
 		basement: {
 			title: 'The Basement',
-			frames: buildFrames('assets/img/TheBasement.png', basementCaptions)
+			frames: withStoryboardImages('the_basement', 4, basementShotlistFrames, 21)
 		},
 		familiar: {
 			title: 'Seem Familiar?',
-			frames: buildFrames('assets/img/seemsfamiliar.png', familiarCaptions)
+			frames: withStoryboardImages('seems_familiar', 24, familiarShotlistFrames, 39)
 		}
 	};
 
@@ -459,16 +471,28 @@ window.addEventListener('resize', () => updateTrack(false));
 		const single = document.createElement('article');
 		single.className = 'storyboard-modal__single';
 
-		const meta = document.createElement('div');
-		meta.className = 'storyboard-modal__single-meta';
+		const stage = document.createElement('div');
+		stage.className = 'storyboard-modal__single-stage';
+
+		const prev = document.createElement('button');
+		prev.type = 'button';
+		prev.className = 'storyboard-modal__single-nav storyboard-modal__single-nav--prev';
+		prev.dataset.singleNav = 'prev';
+		prev.textContent = 'Previous';
+		prev.disabled = activeFrameIndex <= 0;
+
+		const main = document.createElement('div');
+		main.className = 'storyboard-modal__single-main';
+
+		const metaRow = document.createElement('div');
+		metaRow.className = 'storyboard-modal__single-meta-row';
 		const scene = document.createElement('span');
-		scene.textContent = frame.scene;
+		scene.className = 'storyboard-modal__single-scene';
+		scene.textContent = frame.scene || ' ';
 		const shot = document.createElement('span');
-		shot.textContent = frame.shot;
-		const index = document.createElement('span');
-		index.className = 'storyboard-modal__single-index';
-		index.textContent = `Frame ${activeFrameIndex + 1} of ${frameCount}`;
-		meta.append(scene, shot, index);
+		shot.className = 'storyboard-modal__single-shot';
+		shot.textContent = frame.shot || ' ';
+		metaRow.append(scene, shot);
 
 		const frameWrap = document.createElement('div');
 		frameWrap.className = 'storyboard-modal__single-frame';
@@ -479,15 +503,26 @@ window.addEventListener('resize', () => updateTrack(false));
 
 		const caption = document.createElement('p');
 		caption.className = 'storyboard-modal__single-caption';
-		caption.textContent = frame.caption;
+		caption.textContent = frame.caption || ' ';
 
-		single.append(meta, frameWrap, caption);
+		main.append(metaRow, frameWrap, caption);
+
+		const next = document.createElement('button');
+		next.type = 'button';
+		next.className = 'storyboard-modal__single-nav storyboard-modal__single-nav--next';
+		next.dataset.singleNav = 'next';
+		next.textContent = 'Next';
+		next.disabled = activeFrameIndex >= frameCount - 1;
+
+		stage.append(prev, main, next);
+		single.append(stage);
 		setModalContent(single);
 	}
 
 	function renderContent() {
 		const story = getActiveStory();
 		if (!story) return;
+		content.classList.toggle('storyboard-modal__content--single', currentMode === 'single');
 		if (currentMode === 'single') {
 			renderSingleView(story);
 			return;
@@ -628,8 +663,22 @@ window.addEventListener('resize', () => updateTrack(false));
 	});
 
 	content.addEventListener('click', (event) => {
-		if (!ENABLE_SINGLE_VIEW) return;
-		if (currentMode !== 'multi') return;
+		if (currentMode === 'single') {
+			const navButton = event.target.closest('[data-single-nav]');
+			if (!navButton) return;
+			if (navButton.dataset.singleNav === 'prev') {
+				activeFrameIndex -= 1;
+			} else if (navButton.dataset.singleNav === 'next') {
+				activeFrameIndex += 1;
+			}
+			const activeStory = getActiveStory();
+			const frameCount = activeStory ? activeStory.frames.length : 0;
+			activeFrameIndex = clampFrameIndex(activeFrameIndex, frameCount);
+			renderContent();
+			return;
+		}
+
+		if (!ENABLE_SINGLE_VIEW || currentMode !== 'multi') return;
 		const tile = event.target.closest('.storyboard-tile');
 		if (!tile) return;
 		const activeStory = getActiveStory();
@@ -894,4 +943,297 @@ window.addEventListener('resize', () => updateTrack(false));
 			rect = null;
 		});
 	});
+})();
+
+(function () {
+	const brandMark = document.querySelector('#brand-mark');
+	const heroMark = document.querySelector('.hero__logo-top');
+	const tokenF = document.querySelector('[data-ui-token="f"]');
+	const tokenT = document.querySelector('[data-ui-token="t"]');
+	const tokenR = document.querySelector('[data-ui-token="r"]');
+	const divider = document.querySelector('.roles__divider');
+	const dividerHandle = divider ? divider.querySelector('.roles__divider-handle') : null;
+	const carousel = document.querySelector('.action__carousel');
+	const frame = carousel ? carousel.closest('.action__frame') : null;
+	const dots = Array.from((frame || document).querySelectorAll('.action__dot'));
+
+	if (!brandMark || !tokenF || !tokenT || !tokenR || !divider || !dividerHandle || !carousel || dots.length < 2) return;
+
+	const FLOW_WINDOW_MS = 20000;
+	const HANDLE_PASS = -44;
+	const DRAG_MIN = 36;
+	const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+	let flowIndex = 0;
+	let flowDeadline = 0;
+	let dividerOffset = 0;
+	let dividerDragActive = false;
+	let dividerStartX = 0;
+	let dividerStartOffset = 0;
+	let trackPointerId = null;
+	let trackDown = false;
+	let trackStartX = 0;
+
+	function syncDivider() {
+		divider.style.setProperty('--divider-x', `${dividerOffset}px`);
+	}
+
+	function getDividerLimit() {
+		const rect = divider.getBoundingClientRect();
+		const halfTrack = rect.width / 2;
+		return Math.max(56, Math.floor(halfTrack - 6));
+	}
+
+	function syncBrand(value) {
+		if (value !== 1) return;
+		const nextSrc = 'assets/img/memory.png';
+		if (brandMark.getAttribute('src') !== nextSrc) {
+			brandMark.setAttribute('src', nextSrc);
+		}
+		if (heroMark && heroMark.getAttribute('src') !== nextSrc) {
+			heroMark.setAttribute('src', nextSrc);
+		}
+	}
+
+	function flowExpired() {
+		return flowDeadline > 0 && Date.now() > flowDeadline;
+	}
+
+	function flowReady(isReady) {
+		divider.classList.toggle('roles__divider--ready', isReady);
+	}
+
+	function flowReset() {
+		flowIndex = 0;
+		flowDeadline = 0;
+		dividerOffset = 0;
+		dividerDragActive = false;
+		trackPointerId = null;
+		trackDown = false;
+		divider.classList.remove('roles__divider--dragging');
+		flowReady(false);
+		syncDivider();
+	}
+
+	function flowTimed(nextIndex) {
+		if (flowExpired()) {
+			flowReset();
+			return false;
+		}
+		flowIndex = nextIndex;
+		return true;
+	}
+
+	function flowMonitorReset() {
+		if (flowIndex >= 1 && flowIndex <= 4) {
+			flowReset();
+			return true;
+		}
+		return false;
+	}
+
+	function flowTryCompleteFromCarousel() {
+		if (flowExpired()) {
+			flowReset();
+			return false;
+		}
+		if (flowIndex !== 4) return false;
+		const activeIndex = dots.findIndex((dot) => dot.classList.contains('action__dot--active'));
+		if (activeIndex !== 1) return false;
+		if (!flowTimed(5)) return false;
+		syncBrand(1);
+		return true;
+	}
+
+	function isPrimaryPointerClick(event) {
+		return event.button === 0 && event.detail !== 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+	}
+
+	tokenF.addEventListener('click', (event) => {
+		if (!isPrimaryPointerClick(event)) return;
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 0) {
+			flowIndex = 1;
+			flowDeadline = Date.now() + FLOW_WINDOW_MS;
+			return;
+		}
+		flowMonitorReset();
+	});
+
+	tokenT.addEventListener('click', (event) => {
+		if (!isPrimaryPointerClick(event)) return;
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 1) {
+			flowIndex = 2;
+			return;
+		}
+		flowMonitorReset();
+	});
+
+	tokenR.addEventListener('click', (event) => {
+		if (!isPrimaryPointerClick(event)) return;
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 2) {
+			flowIndex = 3;
+			flowReady(true);
+			return;
+		}
+		flowMonitorReset();
+	});
+
+	function beginDivider(clientX) {
+		if (flowExpired()) {
+			flowReset();
+			return false;
+		}
+		if (flowIndex !== 3) {
+			flowMonitorReset();
+			return false;
+		}
+		dividerDragActive = true;
+		dividerStartX = clientX;
+		dividerStartOffset = dividerOffset;
+		divider.classList.add('roles__divider--dragging');
+		return true;
+	}
+
+	function moveDivider(clientX) {
+		if (!dividerDragActive) return;
+		if (flowIndex !== 3) {
+			flowReset();
+			return;
+		}
+		const limit = getDividerLimit();
+		const delta = clientX - dividerStartX;
+		dividerOffset = clamp(dividerStartOffset + delta, -limit, limit);
+		syncDivider();
+	}
+
+	function settleDivider() {
+		if (!dividerDragActive) return;
+		dividerDragActive = false;
+		divider.classList.remove('roles__divider--dragging');
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex !== 3) {
+			flowMonitorReset();
+			return;
+		}
+		if (dividerOffset <= HANDLE_PASS) {
+			flowReady(false);
+			flowIndex = 4;
+			return;
+		}
+		syncDivider();
+	}
+
+	divider.addEventListener('mousedown', (event) => {
+		if (event.button !== 0) return;
+		if (!beginDivider(event.clientX)) return;
+		event.preventDefault();
+	});
+
+	window.addEventListener('mousemove', (event) => {
+		moveDivider(event.clientX);
+	});
+
+	window.addEventListener('mouseup', () => {
+		settleDivider();
+	});
+
+	divider.addEventListener('touchstart', (event) => {
+		if (event.touches.length !== 1) return;
+		const touch = event.touches[0];
+		if (!touch) return;
+		if (!beginDivider(touch.clientX)) return;
+		event.preventDefault();
+	}, { passive: false });
+
+	window.addEventListener('touchmove', (event) => {
+		if (!dividerDragActive) return;
+		const touch = event.touches[0];
+		if (!touch) return;
+		moveDivider(touch.clientX);
+		event.preventDefault();
+	}, { passive: false });
+
+	window.addEventListener('touchend', () => {
+		settleDivider();
+	});
+
+	window.addEventListener('touchcancel', () => {
+		settleDivider();
+	});
+
+	carousel.addEventListener('pointerdown', (event) => {
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+
+		const controlTarget = event.target.closest('.action__arrow, .action__dot, .action__button, button, a');
+		if (flowIndex === 1 || flowIndex === 2 || flowIndex === 3) {
+			flowReset();
+			return;
+		}
+		if (flowIndex !== 4) return;
+		if (event.pointerType === 'mouse' && event.button !== 0) return;
+		if (controlTarget) return;
+
+		trackPointerId = event.pointerId;
+		trackDown = true;
+		trackStartX = event.clientX;
+		carousel.setPointerCapture(event.pointerId);
+	});
+
+	function settleTrack(event) {
+		if (!trackDown || trackPointerId !== event.pointerId) return;
+		trackDown = false;
+		trackPointerId = null;
+		try {
+			carousel.releasePointerCapture(event.pointerId);
+		} catch (error) {
+		}
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex !== 4) {
+			flowMonitorReset();
+			return;
+		}
+		const movedLeft = (event.clientX - trackStartX) <= -DRAG_MIN;
+		if (!movedLeft) return;
+		flowTryCompleteFromCarousel();
+	}
+
+	carousel.addEventListener('pointerup', settleTrack);
+	carousel.addEventListener('pointercancel', settleTrack);
+
+	carousel.addEventListener('click', (event) => {
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex >= 1 && flowIndex <= 3 && event.target.closest('.action__arrow, .action__dot, .action__button, button, a')) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 4) {
+			requestAnimationFrame(() => {
+				flowTryCompleteFromCarousel();
+			});
+		}
+	}, true);
 })();
