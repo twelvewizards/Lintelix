@@ -1546,6 +1546,14 @@ body.waitlist-open .site-footer {
   z-index: 1;
 }
 
+.storyboard-modal__title-group {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: clamp(0.55rem, 1.1vw, 1.15rem);
+  min-width: 0;
+}
+
 .storyboard-modal__title {
   margin: 0;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
@@ -1553,6 +1561,16 @@ body.waitlist-open .site-footer {
   font-weight: 600;
   letter-spacing: 0.01em;
   color: #ffffff;
+}
+
+.storyboard-modal__credit {
+  margin: 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: clamp(0.82rem, 1.25vw, 1.18rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
 }
 
 .storyboard-modal__controls {
@@ -1657,6 +1675,7 @@ body.waitlist-open .site-footer {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem 0.95rem;
+  align-items: start;
 }
 
 .storyboard-tile {
@@ -1668,6 +1687,7 @@ body.waitlist-open .site-footer {
   text-align: left;
   display: grid;
   gap: 0.5rem;
+  align-content: start;
   cursor: pointer;
 }
 
