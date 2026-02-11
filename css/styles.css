@@ -1,4 +1,4 @@
-@font-face {
+﻿@font-face {
   font-family: "Sora";
   src: url("../assets/fonts/Sora/static/Sora-Regular.ttf") format("truetype");
   font-weight: 400;
@@ -1158,11 +1158,11 @@ color: #CA4246;
 }
 
 .action__card--basement {
-  background: url("../assets/img/TheBasement.png") center / cover no-repeat;
+  background: url("../assets/img/the_basement/TheBasement.png") center / cover no-repeat;
 }
 
 .action__card--familiar {
-  background: url("../assets/img/seemsfamiliar.png") center / cover no-repeat;
+  background: url("../assets/img/seems_familiar/seemsfamiliar.png") center / cover no-repeat;
 }
 
 .action__content {
@@ -1269,7 +1269,7 @@ color: #CA4246;
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* ───────────────────────────── About section ───────────────────────────── */
+/* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ About section 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .waitlist-modal[hidden] {
   display: none;
 }
@@ -1867,7 +1867,7 @@ body.waitlist-open .site-footer {
 
 /* connector dots removed earlier */
 
-/* Position cards in circle — clamp horizontal offset so they shrink inward on narrower screens */
+/* Position cards in circle 鈥?clamp horizontal offset so they shrink inward on narrower screens */
 .about__card--1 {
   top: 50%;
   left: 50%;
@@ -2117,9 +2117,9 @@ body.waitlist-open .site-footer {
   font-size: 0.95rem;
 }
 
-/* Stats removed — styles deleted per request */
+/* Stats removed 鈥?styles deleted per request */
 
-/* ── About section responsive: full vertical collapse ── */
+/* 鈹€鈹€ About section responsive: full vertical collapse 鈹€鈹€ */
 @media (max-width: 900px) {
   .about__circle {
     height: auto;
@@ -2273,3 +2273,5 @@ body.waitlist-open .site-footer {
     text-align: center;
   }
 }
+
+

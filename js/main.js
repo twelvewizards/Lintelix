@@ -319,63 +319,63 @@ window.addEventListener('resize', () => updateTrack(false));
 
 	const basementShotlistFrames = [
 		{ scene: 'Scene 1', shot: 'Shot 1', caption: 'INT. CU - Straight angle. JOHN. "Great news Dave.."' },
-		{ scene: 'Scene 1', shot: 'Shot 2', caption: 'INT. CU - Straight angle, DAVE. "Great!"' },
+		{ scene: 'Scene 1', shot: 'Shot 2', caption: 'INT. CU - Straight angle. DAVE. "Great!"' },
 		{ scene: 'Scene 1', shot: 'Shot 3', caption: 'INT. MCU - OTS Dave, of JOHN. "All they need from you..."' },
 		{ scene: 'Scene 1', shot: 'Shot 4', caption: 'INT. MCU - OTS John, of DAVE. Reacting to John.' },
 		{ scene: 'Scene 1', shot: 'Shot 5', caption: 'INT. ECU - JOHN\'s face. "The basement."' },
+		{ scene: 'Scene 1', shot: 'Shot 6', caption: 'INT. ECU - DAVE\'s mouth. "The basement?"' },
+		{ scene: 'Scene 1', shot: 'Shot 7', caption: 'INT. ECU - JOHN\'s mouth. "The basement!"' },
 		{ scene: 'Scene 2', shot: 'Shot 1', caption: 'INT. WS - Elevator doors open, Dave stands holding flashlight. ZOOM OUT.' },
 		{ scene: 'Scene 2', shot: 'Shot 2', caption: 'INT. MCU - OTS, Dave walks into the basement, revealing boxes everywhere.' },
 		{ scene: 'Scene 2', shot: 'Shot 3', caption: 'INT. MCU - Dave begins searching through boxes.' },
 		{ scene: 'Scene 2', shot: 'Shot 4', caption: 'INT. CU - Dave\'s beard has grown, pile of papers behind.' },
 		{ scene: 'Scene 2', shot: 'Shot 5', caption: 'INT. WS - Dave sits on floor searching. His hair is greying, pile larger.' },
 		{ scene: 'Scene 2', shot: 'Shot 6', caption: 'INT. CU - Dave\'s face lights up, he found it.' },
-		{ scene: 'Scene 3', shot: 'Shot 1', caption: 'INT. WS -> CU - Elevator doors open. Dave runs out excited "I found it!". He runs up to camera, then a look of disappointment and realization on his face.' },
-		{ scene: 'Scene 3', shot: 'Shot 2', caption: 'INT. WS - OTS Dave, reveal dark empty foyer. No one is there. It\'s night, janitor in background. Track out slowly from Dave, Dave drops paper.' },
-		{ scene: 'Scene 4', shot: 'Shot 1', caption: 'Man on a computer, drinking a cup of coffee, using Asset Memory.' },
-		{ scene: 'Scene 4', shot: 'Shot 2', caption: 'Dave steps forward.' },
-		{ scene: 'Scene 4', shot: 'Shot 3', caption: 'A montage begins.' },
-		{ scene: 'Scene 4', shot: 'Shot 4', caption: 'Time passes. He continues searching.' },
-		{ scene: 'Scene 4', shot: 'Shot 5', caption: 'More time passes. He grows weary.' },
-		{ scene: 'Scene 4', shot: 'Shot 6', caption: 'But finally, a spark lights up.' }
+		{ scene: 'Scene 3', shot: 'Shot 1', caption: 'INT. WS - Elevator doors open. Dave runs out excited "I found it!". He runs up to camera, then a look of disappointment and realization on his face.' },
+		{ scene: 'Scene 3', shot: 'Shot 1 (CONT)', caption: 'INT. CU - Shot 1. CONT.' },
+		{ scene: 'Scene 3', shot: 'Shot 2', caption: 'INT. WS - OTS Dave, Reveal dark empty foyer. No one is there. It\'s night, janitor in background. Track out slowly from Dave, Dave drops paper.' },
+		{ scene: 'Scene 3', shot: 'Shot 2 (CONT)', caption: 'INT. WS - Shot 2. CONT.' },
+		{ scene: 'Scene 4', shot: 'Shot 1', caption: 'INT. MS - Man on a computer, drinking a cup of coffee, using Asset Memory.' }
 	];
 
-	const familiarCaptions = [
-		'Searching scattered handover folders',
-		'Comparing disconnected document sets',
-		'Tracing who approved what and when',
-		'Finding the root source for a claim',
-		'Locating evidence during time pressure',
-		'Checking if updates reached every team',
-		'Resolving mismatched file versions',
-		'Identifying data gaps before audits',
-		'Linking operations queries to evidence',
-		'Reviewing key decisions by timeline',
-		'Building a consistent project memory',
-		'Sharing one clear answer with source'
+	const familiarShotlistFrames = [
+		{ scene: 'Scene 1', shot: 'Shot 1', caption: 'INT. CU - Straight angle of a construction manager\'s face. "The client is asking..."' },
+		{ scene: 'Scene 1', shot: 'Shot 2', caption: 'INT. MS - Camera trucks further into the office, starting from the operations manager.' },
+		{ scene: 'Scene 1', shot: 'Shot 3', caption: 'INT. MCU - Focus on building managers face. "were not going to make the due date!"' },
+		{ scene: 'Scene 1', shot: 'Shot 4', caption: 'INT. WS - Scene zooms out, showing the whole interior, the presenter walks into frame while everything is frozen.' },
+		{ scene: 'Scene 1', shot: 'Shot 5', caption: 'INT. CU - The presenter\'s face is framed with an open filing cabinet.' },
+		{ scene: 'Scene 1', shot: 'Shot 6', caption: 'INT. CU - Focus on the computer monitor; the presenter\'s head is poking out.' },
+		{ scene: 'Scene 1', shot: 'Shot 7', caption: 'INT. WS - Shows the whole office, the presenter walks in.' },
+		{ scene: 'Scene 1', shot: 'Shot 8', caption: 'INT. WS - The entire office is calm, and everyone is working diligently.' },
+		{ scene: 'Scene 1', shot: 'Shot 9', caption: 'INT. WS - Operations manager diligently working at her desk. "Hey, Sarah is asking..."' },
+		{ scene: 'Scene 1', shot: 'Shot 10', caption: 'INT. OTS - Operations manager typing on her keyboard and using asset memory.' },
+		{ scene: 'Scene 1', shot: 'Shot 11', caption: 'INT. MS - Frames the managers looking at the same screen. "so that\'s why it was rerouted"' },
+		{ scene: 'Scene 1', shot: 'Shot 12', caption: 'INT. MS - Presenter on the left of the frame with the managers in the background. "Asset memory retains..."' }
 	];
 
-	function buildFramesFromImageRange(folderName, startNumber, endNumber, captions) {
-		const frames = [];
-		for (let imageNumber = startNumber; imageNumber <= endNumber; imageNumber += 1) {
-			const index = imageNumber - startNumber;
-			frames.push({
-				scene: `Scene ${Math.floor(index / 4) + 1}`,
-				shot: `Shot ${(index % 4) + 1}`,
-				caption: captions[index] || `Storyboard frame ${imageNumber}`,
+	function withStoryboardImages(folderName, startNumber, frames, endNumber = null) {
+		const lastNumber = Number.isFinite(endNumber) ? endNumber : (startNumber + frames.length - 1);
+		const mapped = [];
+
+		for (let imageNumber = startNumber; imageNumber <= lastNumber; imageNumber += 1) {
+			const frame = frames[imageNumber - startNumber] || { scene: '', shot: '', caption: '' };
+			mapped.push({
+				...frame,
 				image: `assets/img/${folderName}/${imageNumber}.jpg`
 			});
 		}
-		return frames;
+
+		return mapped;
 	}
 
 	const stories = {
 		basement: {
 			title: 'The Basement',
-			frames: basementShotlistFrames.map((frame, index) => ({ ...frame, image: `assets/img/the_basement/${index + 4}.jpg` }))
+			frames: withStoryboardImages('the_basement', 4, basementShotlistFrames, 21)
 		},
 		familiar: {
 			title: 'Seem Familiar?',
-			frames: buildFramesFromImageRange('seems_familiar', 24, 40, familiarCaptions)
+			frames: withStoryboardImages('seems_familiar', 24, familiarShotlistFrames, 39)
 		}
 	};
 
