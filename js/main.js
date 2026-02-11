@@ -336,7 +336,12 @@ window.addEventListener('resize', () => updateTrack(false));
 		{ scene: 'Scene 3', shot: 'Shot 1 (CONT)', caption: 'INT. CU - Shot 1. CONT.' },
 		{ scene: 'Scene 3', shot: 'Shot 2', caption: 'INT. WS - OTS Dave, Reveal dark empty foyer. No one is there. It\'s night, janitor in background. Track out slowly from Dave, Dave drops paper.' },
 		{ scene: 'Scene 3', shot: 'Shot 2 (CONT)', caption: 'INT. WS - Shot 2. CONT.' },
-		{ scene: 'Scene 4', shot: 'Shot 1', caption: 'INT. MS - Man on a computer, drinking a cup of coffee, using Asset Memory.' }
+		{
+			scene: 'Scene 4',
+			shot: 'Shot 1',
+			caption: 'INT. MS - Man on a computer, drinking a cup of coffee, using Asset Memory.',
+			image: 'assets/img/the_basement/basement_lastshot.gif'
+		}
 	];
 
 	const familiarShotlistFrames = [
@@ -362,7 +367,7 @@ window.addEventListener('resize', () => updateTrack(false));
 			const frame = frames[imageNumber - startNumber] || { scene: '', shot: '', caption: '' };
 			mapped.push({
 				...frame,
-				image: `assets/img/${folderName}/${imageNumber}.jpg`
+				image: frame.image || `assets/img/${folderName}/${imageNumber}.jpg`
 			});
 		}
 
