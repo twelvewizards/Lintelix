@@ -944,3 +944,296 @@ window.addEventListener('resize', () => updateTrack(false));
 		});
 	});
 })();
+
+(function () {
+	const brandMark = document.querySelector('#brand-mark');
+	const heroMark = document.querySelector('.hero__logo-top');
+	const tokenF = document.querySelector('[data-ui-token="f"]');
+	const tokenT = document.querySelector('[data-ui-token="t"]');
+	const tokenR = document.querySelector('[data-ui-token="r"]');
+	const divider = document.querySelector('.roles__divider');
+	const dividerHandle = divider ? divider.querySelector('.roles__divider-handle') : null;
+	const carousel = document.querySelector('.action__carousel');
+	const frame = carousel ? carousel.closest('.action__frame') : null;
+	const dots = Array.from((frame || document).querySelectorAll('.action__dot'));
+
+	if (!brandMark || !tokenF || !tokenT || !tokenR || !divider || !dividerHandle || !carousel || dots.length < 2) return;
+
+	const FLOW_WINDOW_MS = 20000;
+	const HANDLE_PASS = -44;
+	const DRAG_MIN = 36;
+	const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+	let flowIndex = 0;
+	let flowDeadline = 0;
+	let dividerOffset = 0;
+	let dividerDragActive = false;
+	let dividerStartX = 0;
+	let dividerStartOffset = 0;
+	let trackPointerId = null;
+	let trackDown = false;
+	let trackStartX = 0;
+
+	function syncDivider() {
+		divider.style.setProperty('--divider-x', `${dividerOffset}px`);
+	}
+
+	function getDividerLimit() {
+		const rect = divider.getBoundingClientRect();
+		const halfTrack = rect.width / 2;
+		return Math.max(56, Math.floor(halfTrack - 6));
+	}
+
+	function syncBrand(value) {
+		if (value !== 1) return;
+		const nextSrc = 'assets/img/memory.png';
+		if (brandMark.getAttribute('src') !== nextSrc) {
+			brandMark.setAttribute('src', nextSrc);
+		}
+		if (heroMark && heroMark.getAttribute('src') !== nextSrc) {
+			heroMark.setAttribute('src', nextSrc);
+		}
+	}
+
+	function flowExpired() {
+		return flowDeadline > 0 && Date.now() > flowDeadline;
+	}
+
+	function flowReady(isReady) {
+		divider.classList.toggle('roles__divider--ready', isReady);
+	}
+
+	function flowReset() {
+		flowIndex = 0;
+		flowDeadline = 0;
+		dividerOffset = 0;
+		dividerDragActive = false;
+		trackPointerId = null;
+		trackDown = false;
+		divider.classList.remove('roles__divider--dragging');
+		flowReady(false);
+		syncDivider();
+	}
+
+	function flowTimed(nextIndex) {
+		if (flowExpired()) {
+			flowReset();
+			return false;
+		}
+		flowIndex = nextIndex;
+		return true;
+	}
+
+	function flowMonitorReset() {
+		if (flowIndex >= 1 && flowIndex <= 4) {
+			flowReset();
+			return true;
+		}
+		return false;
+	}
+
+	function flowTryCompleteFromCarousel() {
+		if (flowExpired()) {
+			flowReset();
+			return false;
+		}
+		if (flowIndex !== 4) return false;
+		const activeIndex = dots.findIndex((dot) => dot.classList.contains('action__dot--active'));
+		if (activeIndex !== 1) return false;
+		if (!flowTimed(5)) return false;
+		syncBrand(1);
+		return true;
+	}
+
+	function isPrimaryPointerClick(event) {
+		return event.button === 0 && event.detail !== 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+	}
+
+	tokenF.addEventListener('click', (event) => {
+		if (!isPrimaryPointerClick(event)) return;
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 0) {
+			flowIndex = 1;
+			flowDeadline = Date.now() + FLOW_WINDOW_MS;
+			return;
+		}
+		flowMonitorReset();
+	});
+
+	tokenT.addEventListener('click', (event) => {
+		if (!isPrimaryPointerClick(event)) return;
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 1) {
+			flowIndex = 2;
+			return;
+		}
+		flowMonitorReset();
+	});
+
+	tokenR.addEventListener('click', (event) => {
+		if (!isPrimaryPointerClick(event)) return;
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 2) {
+			flowIndex = 3;
+			flowReady(true);
+			return;
+		}
+		flowMonitorReset();
+	});
+
+	function beginDivider(clientX) {
+		if (flowExpired()) {
+			flowReset();
+			return false;
+		}
+		if (flowIndex !== 3) {
+			flowMonitorReset();
+			return false;
+		}
+		dividerDragActive = true;
+		dividerStartX = clientX;
+		dividerStartOffset = dividerOffset;
+		divider.classList.add('roles__divider--dragging');
+		return true;
+	}
+
+	function moveDivider(clientX) {
+		if (!dividerDragActive) return;
+		if (flowIndex !== 3) {
+			flowReset();
+			return;
+		}
+		const limit = getDividerLimit();
+		const delta = clientX - dividerStartX;
+		dividerOffset = clamp(dividerStartOffset + delta, -limit, limit);
+		syncDivider();
+	}
+
+	function settleDivider() {
+		if (!dividerDragActive) return;
+		dividerDragActive = false;
+		divider.classList.remove('roles__divider--dragging');
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex !== 3) {
+			flowMonitorReset();
+			return;
+		}
+		if (dividerOffset <= HANDLE_PASS) {
+			flowReady(false);
+			flowIndex = 4;
+			return;
+		}
+		syncDivider();
+	}
+
+	divider.addEventListener('mousedown', (event) => {
+		if (event.button !== 0) return;
+		if (!beginDivider(event.clientX)) return;
+		event.preventDefault();
+	});
+
+	window.addEventListener('mousemove', (event) => {
+		moveDivider(event.clientX);
+	});
+
+	window.addEventListener('mouseup', () => {
+		settleDivider();
+	});
+
+	divider.addEventListener('touchstart', (event) => {
+		if (event.touches.length !== 1) return;
+		const touch = event.touches[0];
+		if (!touch) return;
+		if (!beginDivider(touch.clientX)) return;
+		event.preventDefault();
+	}, { passive: false });
+
+	window.addEventListener('touchmove', (event) => {
+		if (!dividerDragActive) return;
+		const touch = event.touches[0];
+		if (!touch) return;
+		moveDivider(touch.clientX);
+		event.preventDefault();
+	}, { passive: false });
+
+	window.addEventListener('touchend', () => {
+		settleDivider();
+	});
+
+	window.addEventListener('touchcancel', () => {
+		settleDivider();
+	});
+
+	carousel.addEventListener('pointerdown', (event) => {
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+
+		const controlTarget = event.target.closest('.action__arrow, .action__dot, .action__button, button, a');
+		if (flowIndex === 1 || flowIndex === 2 || flowIndex === 3) {
+			flowReset();
+			return;
+		}
+		if (flowIndex !== 4) return;
+		if (event.pointerType === 'mouse' && event.button !== 0) return;
+		if (controlTarget) return;
+
+		trackPointerId = event.pointerId;
+		trackDown = true;
+		trackStartX = event.clientX;
+		carousel.setPointerCapture(event.pointerId);
+	});
+
+	function settleTrack(event) {
+		if (!trackDown || trackPointerId !== event.pointerId) return;
+		trackDown = false;
+		trackPointerId = null;
+		try {
+			carousel.releasePointerCapture(event.pointerId);
+		} catch (error) {
+		}
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex !== 4) {
+			flowMonitorReset();
+			return;
+		}
+		const movedLeft = (event.clientX - trackStartX) <= -DRAG_MIN;
+		if (!movedLeft) return;
+		flowTryCompleteFromCarousel();
+	}
+
+	carousel.addEventListener('pointerup', settleTrack);
+	carousel.addEventListener('pointercancel', settleTrack);
+
+	carousel.addEventListener('click', (event) => {
+		if (flowExpired()) {
+			flowReset();
+			return;
+		}
+		if (flowIndex >= 1 && flowIndex <= 3 && event.target.closest('.action__arrow, .action__dot, .action__button, button, a')) {
+			flowReset();
+			return;
+		}
+		if (flowIndex === 4) {
+			requestAnimationFrame(() => {
+				flowTryCompleteFromCarousel();
+			});
+		}
+	}, true);
+})();

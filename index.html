@@ -12,7 +12,7 @@
     <nav class="top-nav" aria-label="Main navigation">
       <div class="top-nav__inner">
         <a class="top-nav__brand" href="/">
-          <img src="assets/img/AMLogoBlue.svg" alt="Asset Memory" />
+          <img id="brand-mark" src="assets/img/AMLogoBlue.svg" alt="Asset Memory" />
         </a>
         <div class="top-nav__links">
           <a class="top-nav__link" href="#Video Demo">Video Demo</a>
@@ -41,7 +41,7 @@
         <div class="hero__divider" aria-hidden="true"></div>
 
         <div class="hero__box" aria-hidden="false">
-        <p class="hero__box-text">Turn scattered asset information into <u class="hero__box-text-underline">a single source of truth</u>. Gain a clear view of insights across time, organized for easy access and efficiency.</p>
+        <p class="hero__box-text">Turn scattered asset information into <u class="hero__box-text-underline">a single source of <span data-ui-token="r">truth</span></u>. Gain a clear view of insights across time, organized for easy access and efficiency.</p>
       </div>
       <div class="hero__actions" aria-hidden="false">
         <a href="#learn-more-target" class="hero__learn-more">Learn more</a>
@@ -98,7 +98,7 @@
             <h2 class="section-title section-title--feature">Video demo</h2>
           </div>
           <div class="feature__title feature__title--top">
-            <h2>Find the <a class="feature__title-blue">Answer</a>,</h2>
+            <h2><span data-ui-token="f">Find</span> the <a class="feature__title-blue">Answer</a>,</h2>
             <span class="feature__line"></span>
           </div>
           <div class="feature__frame">
@@ -108,7 +108,7 @@
           </div>
           <div class="feature__title feature__title--bottom">
             <span class="feature__line"></span>
-            <h2>See the <a class="feature__title-blue">Source</a>.</h2>
+            <h2>See <span data-ui-token="t">the</span> <a class="feature__title-blue">Source</a>.</h2>
           </div>
         </div>
       </section>
@@ -118,7 +118,9 @@
           <div class="roles__header">
             <h2 class="section-title section-title--feature roles__eyebrow">Roles we support</h2>
             <p class="roles__subtitle">From delivery through ownership, every role gets a trusted, traceable record.</p>
-            <span class="roles__divider" aria-hidden="true"></span>
+            <span class="roles__divider" aria-hidden="true">
+              <span class="roles__divider-handle" aria-hidden="true"></span>
+            </span>
           </div>
           <div class="roles__grid">
             <article class="roles__card roles__card--delivery">

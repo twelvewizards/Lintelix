@@ -781,15 +781,17 @@ color: #CA4246;
 }
 
 .roles__divider {
+  --divider-x: 0px;
+  display: block;
   width: min(420px, 70%);
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
   position: relative;
+  overflow: visible;
   margin-top: 0.4rem;
 }
 
-.roles__divider::after {
-  content: "";
+.roles__divider-handle {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -797,9 +799,26 @@ color: #CA4246;
   background: #199cff;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(calc(-50% + var(--divider-x)), -50%);
   box-shadow: 0 0 0 6px rgba(25, 156, 255, 0.12);
   animation: roles-pulse 3.6s ease-in-out infinite;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.roles__divider--ready {
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+.roles__divider--ready .roles__divider-handle {
+  pointer-events: auto;
+  cursor: ew-resize;
+}
+
+.roles__divider--dragging .roles__divider-handle {
+  cursor: grabbing;
+  animation-play-state: paused;
 }
 
 .roles__grid {
@@ -970,8 +989,14 @@ color: #CA4246;
 }
 
 @keyframes roles-pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+  0%, 100% {
+    opacity: 0.9;
+    box-shadow: 0 0 0 6px rgba(25, 156, 255, 0.12);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 10px rgba(25, 156, 255, 0.08);
+  }
 }
 
 .cta-banner {
