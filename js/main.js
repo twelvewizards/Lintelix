@@ -307,6 +307,7 @@ window.addEventListener('resize', () => updateTrack(false));
 
 	const dialog = modal.querySelector('.storyboard-modal__dialog');
 	const titleElement = modal.querySelector('#storyboard-modal-title');
+	const creditElement = modal.querySelector('.storyboard-modal__credit');
 	const content = modal.querySelector('.storyboard-modal__content');
 	const closeButton = modal.querySelector('.storyboard-modal__close');
 	const viewButtons = Array.from(modal.querySelectorAll('.storyboard-modal__view-btn'));
@@ -371,10 +372,12 @@ window.addEventListener('resize', () => updateTrack(false));
 	const stories = {
 		basement: {
 			title: 'The Basement',
+			credit: 'By Leo Eade & Ashton Vincent',
 			frames: withStoryboardImages('the_basement', 4, basementShotlistFrames, 21)
 		},
 		familiar: {
-			title: 'Seem Familiar?',
+			title: 'Seem Familiar',
+			credit: 'By Mark Laico',
 			frames: withStoryboardImages('seems_familiar', 24, familiarShotlistFrames, 39)
 		}
 	};
@@ -568,6 +571,9 @@ window.addEventListener('resize', () => updateTrack(false));
 		currentMode = 'multi';
 		activeFrameIndex = 0;
 		titleElement.textContent = story.title;
+		if (creditElement) {
+			creditElement.textContent = story.credit || '';
+		}
 		updateViewButtons();
 		renderContent();
 
