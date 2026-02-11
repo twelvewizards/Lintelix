@@ -317,19 +317,26 @@ window.addEventListener('resize', () => updateTrack(false));
 		return;
 	}
 
-	const basementCaptions = [
-		'Inspecting archived records in low light',
-		'Tracking the missing maintenance log',
-		'Cross-checking service tags and labels',
-		'Confirming historical approval stamps',
-		'Pinpointing installation timeline conflicts',
-		'Matching evidence to reference drawing',
-		'Validating source against latest revision',
-		'Linking findings to original submission',
-		'Reconstructing sequence of changes',
-		'Flagging unresolved compliance notes',
-		'Preparing cited response for review',
-		'Closing the loop with source attached'
+	const basementShotlistFrames = [
+		{ scene: 'Scene 1', shot: 'Shot 1', caption: 'INT. CU - Straight angle. JOHN. "Great news Dave.."' },
+		{ scene: 'Scene 1', shot: 'Shot 2', caption: 'INT. CU - Straight angle, DAVE. "Great!"' },
+		{ scene: 'Scene 1', shot: 'Shot 3', caption: 'INT. MCU - OTS Dave, of JOHN. "All they need from you..."' },
+		{ scene: 'Scene 1', shot: 'Shot 4', caption: 'INT. MCU - OTS John, of DAVE. Reacting to John.' },
+		{ scene: 'Scene 1', shot: 'Shot 5', caption: 'INT. ECU - JOHN\'s face. "The basement."' },
+		{ scene: 'Scene 2', shot: 'Shot 1', caption: 'INT. WS - Elevator doors open, Dave stands holding flashlight. ZOOM OUT.' },
+		{ scene: 'Scene 2', shot: 'Shot 2', caption: 'INT. MCU - OTS, Dave walks into the basement, revealing boxes everywhere.' },
+		{ scene: 'Scene 2', shot: 'Shot 3', caption: 'INT. MCU - Dave begins searching through boxes.' },
+		{ scene: 'Scene 2', shot: 'Shot 4', caption: 'INT. CU - Dave\'s beard has grown, pile of papers behind.' },
+		{ scene: 'Scene 2', shot: 'Shot 5', caption: 'INT. WS - Dave sits on floor searching. His hair is greying, pile larger.' },
+		{ scene: 'Scene 2', shot: 'Shot 6', caption: 'INT. CU - Dave\'s face lights up, he found it.' },
+		{ scene: 'Scene 3', shot: 'Shot 1', caption: 'INT. WS -> CU - Elevator doors open. Dave runs out excited "I found it!". He runs up to camera, then a look of disappointment and realization on his face.' },
+		{ scene: 'Scene 3', shot: 'Shot 2', caption: 'INT. WS - OTS Dave, reveal dark empty foyer. No one is there. It\'s night, janitor in background. Track out slowly from Dave, Dave drops paper.' },
+		{ scene: 'Scene 4', shot: 'Shot 1', caption: 'Man on a computer, drinking a cup of coffee, using Asset Memory.' },
+		{ scene: 'Scene 4', shot: 'Shot 2', caption: 'Dave steps forward.' },
+		{ scene: 'Scene 4', shot: 'Shot 3', caption: 'A montage begins.' },
+		{ scene: 'Scene 4', shot: 'Shot 4', caption: 'Time passes. He continues searching.' },
+		{ scene: 'Scene 4', shot: 'Shot 5', caption: 'More time passes. He grows weary.' },
+		{ scene: 'Scene 4', shot: 'Shot 6', caption: 'But finally, a spark lights up.' }
 	];
 
 	const familiarCaptions = [
@@ -347,23 +354,28 @@ window.addEventListener('resize', () => updateTrack(false));
 		'Sharing one clear answer with source'
 	];
 
-	function buildFrames(imagePath, captions) {
-		return captions.map((caption, index) => ({
-			scene: `Scene ${Math.floor(index / 4) + 1}`,
-			shot: `Shot ${(index % 4) + 1}`,
-			caption,
-			image: imagePath
-		}));
+	function buildFramesFromImageRange(folderName, startNumber, endNumber, captions) {
+		const frames = [];
+		for (let imageNumber = startNumber; imageNumber <= endNumber; imageNumber += 1) {
+			const index = imageNumber - startNumber;
+			frames.push({
+				scene: `Scene ${Math.floor(index / 4) + 1}`,
+				shot: `Shot ${(index % 4) + 1}`,
+				caption: captions[index] || `Storyboard frame ${imageNumber}`,
+				image: `assets/img/${folderName}/${imageNumber}.jpg`
+			});
+		}
+		return frames;
 	}
 
 	const stories = {
 		basement: {
 			title: 'The Basement',
-			frames: buildFrames('assets/img/TheBasement.png', basementCaptions)
+			frames: basementShotlistFrames.map((frame, index) => ({ ...frame, image: `assets/img/the_basement/${index + 4}.jpg` }))
 		},
 		familiar: {
 			title: 'Seem Familiar?',
-			frames: buildFrames('assets/img/seemsfamiliar.png', familiarCaptions)
+			frames: buildFramesFromImageRange('seems_familiar', 24, 40, familiarCaptions)
 		}
 	};
 
