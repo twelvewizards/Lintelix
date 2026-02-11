@@ -804,3 +804,106 @@ window.addEventListener('resize', () => updateTrack(false));
 
 		document.addEventListener('keydown', onDocumentKeydown);
 	})();
+
+// Cursor-driven 3D tilt for roles cards.
+(function () {
+	const cards = Array.from(document.querySelectorAll('.roles__card'));
+	if (cards.length === 0) return;
+
+	const supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+	if (!supportsFinePointer) return;
+
+	const MAX_TILT = 8; // degrees
+	const SHADOW_MAX_X = 10; // px
+	const SHADOW_MAX_Y = 10; // px
+	const BASE_SHADOW_Y = 18; // px
+	const BASE_SHADOW_BLUR = 38; // px
+
+	const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+	cards.forEach((card) => {
+		let rect = null;
+		let targetX = 0;
+		let targetY = 0;
+		let currentX = 0;
+		let currentY = 0;
+		let targetShadowX = 0;
+		let targetShadowY = BASE_SHADOW_Y;
+		let targetShadowBlur = BASE_SHADOW_BLUR;
+		let currentShadowX = 0;
+		let currentShadowY = BASE_SHADOW_Y;
+		let currentShadowBlur = BASE_SHADOW_BLUR;
+		let rafId = null;
+
+		function updateRect() {
+			rect = card.getBoundingClientRect();
+		}
+
+		function animate() {
+			const ease = 0.5;
+			currentX += (targetX - currentX) * ease;
+			currentY += (targetY - currentY) * ease;
+			currentShadowX += (targetShadowX - currentShadowX) * ease;
+			currentShadowY += (targetShadowY - currentShadowY) * ease;
+			currentShadowBlur += (targetShadowBlur - currentShadowBlur) * ease;
+
+			card.style.setProperty('--tilt-x', `${currentX.toFixed(3)}deg`);
+			card.style.setProperty('--tilt-y', `${currentY.toFixed(3)}deg`);
+			card.style.setProperty('--shadow-x', `${currentShadowX.toFixed(2)}px`);
+			card.style.setProperty('--shadow-y', `${currentShadowY.toFixed(2)}px`);
+			card.style.setProperty('--shadow-blur', `${currentShadowBlur.toFixed(2)}px`);
+
+			if (
+				Math.abs(currentX - targetX) > 0.01 ||
+				Math.abs(currentY - targetY) > 0.01 ||
+				Math.abs(currentShadowX - targetShadowX) > 0.1 ||
+				Math.abs(currentShadowY - targetShadowY) > 0.1 ||
+				Math.abs(currentShadowBlur - targetShadowBlur) > 0.1
+			) {
+				rafId = requestAnimationFrame(animate);
+			} else {
+				rafId = null;
+			}
+		}
+
+		function setTargets(clientX, clientY) {
+			if (!rect) updateRect();
+			if (!rect) return;
+
+			const centerX = rect.left + rect.width / 2;
+			const centerY = rect.top + rect.height / 2;
+
+			// Normalize to -1..1 for both axes based on distance from center.
+			const normalizedX = clamp((clientX - centerX) / (rect.width / 2), -1, 1);
+			const normalizedY = clamp((clientY - centerY) / (rect.height / 2), -1, 1);
+
+			// Math: rotateX uses inverted Y so the cursor side tilts toward the viewer.
+			targetX = -normalizedY * MAX_TILT;
+			targetY = normalizedX * MAX_TILT;
+
+			// Shadow shifts away from the cursor and softens as tilt increases.
+			targetShadowX = -normalizedX * SHADOW_MAX_X;
+			targetShadowY = BASE_SHADOW_Y + Math.abs(normalizedY) * SHADOW_MAX_Y;
+			targetShadowBlur = BASE_SHADOW_BLUR + (Math.abs(normalizedX) + Math.abs(normalizedY)) * 6;
+
+			if (!rafId) rafId = requestAnimationFrame(animate);
+		}
+
+		card.addEventListener('mouseenter', updateRect);
+		card.addEventListener('mousemove', (event) => {
+			setTargets(event.clientX, event.clientY);
+		});
+		card.addEventListener('mouseleave', () => {
+			targetX = 0;
+			targetY = 0;
+			targetShadowX = 0;
+			targetShadowY = BASE_SHADOW_Y;
+			targetShadowBlur = BASE_SHADOW_BLUR;
+			if (!rafId) rafId = requestAnimationFrame(animate);
+		});
+
+		window.addEventListener('resize', () => {
+			rect = null;
+		});
+	});
+})();
