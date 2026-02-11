@@ -1294,7 +1294,7 @@ color: #CA4246;
 .action__label {
   margin: 0;
   font-size: clamp(1.15rem, 2.05vw, 2rem);
-  font-weight: 400;
+  font-weight: 600;
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
@@ -1732,7 +1732,7 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__content--single {
   overflow: hidden;
-  padding-bottom: clamp(0.65rem, 1.4vw, 1rem);
+  padding-bottom: clamp(0.45rem, 0.95vw, 0.8rem);
 }
 
 .storyboard-modal__content::-webkit-scrollbar {
@@ -1808,18 +1808,18 @@ body.waitlist-open .site-footer {
 }
 
 .storyboard-modal__single {
-  min-height: 100%;
+  min-height: 0;
   display: grid;
   align-items: stretch;
 }
 
 .storyboard-modal__single-stage {
   display: grid;
-  grid-template-columns: minmax(110px, 1fr) minmax(0, 860px) minmax(110px, 1fr);
+  grid-template-columns: minmax(84px, 1fr) minmax(0, 700px) minmax(84px, 1fr);
   gap: clamp(0.35rem, 0.9vw, 0.8rem);
   align-items: center;
   align-content: center;
-  min-height: 100%;
+  min-height: 0;
   width: 100%;
 }
 
@@ -1837,7 +1837,7 @@ body.waitlist-open .site-footer {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   color: rgba(234, 246, 255, 0.96);
-  font-size: clamp(1rem, 1.55vw, 1.95rem);
+  font-size: clamp(0.95rem, 1.25vw, 1.5rem);
   font-weight: 600;
   letter-spacing: 0.01em;
   width: min(100%, 900px);
@@ -1881,7 +1881,8 @@ body.waitlist-open .site-footer {
 
 .storyboard-modal__single-frame {
   width: 100%;
-  max-width: 860px;
+  max-width: 700px;
+  max-height: min(50vh, 392px);
   border-radius: 2px;
   overflow: hidden;
   border: 1px solid rgba(196, 225, 249, 0.34);
@@ -1900,9 +1901,9 @@ body.waitlist-open .site-footer {
 .storyboard-modal__single-caption {
   margin: 0;
   text-align: center;
-  font-size: clamp(1rem, 1.1vw, 1.3rem);
+  font-size: clamp(0.92rem, 1vw, 1.12rem);
   color: rgba(235, 246, 255, 0.95);
-  min-height: 1.35em;
+  min-height: 2.7em;
 }
 
 @media (max-width: 1080px) {
