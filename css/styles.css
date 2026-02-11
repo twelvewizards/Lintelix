@@ -761,6 +761,7 @@ color: #CA4246;
   gap: 0.6rem;
   justify-items: center;
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .roles__eyebrow {
@@ -804,26 +805,49 @@ color: #CA4246;
 .roles__grid {
   display: grid;
   gap: 1.6rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Fixed columns to avoid 3+1 wrapping: 4 columns wide, then collapse to 2, then 1 */
+  grid-template-columns: repeat(4, 1fr);
   align-items: stretch;
+  perspective: 900px;
+}
+
+/* At medium widths show 2 columns (2x2 grid) so we never end up with 3+1 */
+@media (max-width: 1000px) {
+  .roles__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* On narrow screens stack into 1 column (4 down) */
+@media (max-width: 520px) {
+  .roles__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .roles__card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --shadow-x: 0px;
+  --shadow-y: 18px;
+  --shadow-blur: 38px;
   background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
   color: #0b1220;
   border-radius: 16px;
   padding: 1.6rem 1.6rem 1.9rem;
   display: grid;
   gap: 0.85rem;
-  box-shadow: 0 18px 38px rgba(9, 18, 35, 0.25);
+  box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) rgba(9, 18, 35, 0.25);
   border: 1px solid rgba(8, 20, 39, 0.08);
   font-family: "Zalando Sans", "Segoe UI", sans-serif;
   text-align: left;
   font-weight: 400;
-  transform: translateY(var(--card-offset, 0));
-  transition: transform 200ms ease, box-shadow 220ms ease, border-color 200ms ease;
+  transform: translateY(var(--card-offset, 0)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform 140ms ease, box-shadow 160ms ease, border-color 160ms ease;
   position: relative;
   overflow: hidden;
+  will-change: transform, box-shadow;
 }
 
 .roles__card h3 {
@@ -908,9 +932,7 @@ color: #CA4246;
 }
 
 .roles__card:hover {
-  box-shadow: 0 26px 50px rgba(9, 18, 35, 0.28);
   border-color: rgba(25, 156, 255, 0.25);
-  transform: translateY(calc(var(--card-offset, 0) - 6px));
 }
 
 .roles__card:hover .roles__accent {
@@ -922,10 +944,10 @@ color: #CA4246;
   background: linear-gradient(180deg, #ffffff 0%, #f1f7f6 100%);
 }
 
-.roles__card:nth-child(1) { --card-offset: 0px; }
-.roles__card:nth-child(2) { --card-offset: 0px; }
-.roles__card:nth-child(3) { --card-offset: 0px; }
-.roles__card:nth-child(4) { --card-offset: 0px; }
+.roles__card:nth-child(1) { --card-offset: 14px; }
+.roles__card:nth-child(2) { --card-offset: -14px; }
+.roles__card:nth-child(3) { --card-offset: 14px; }
+.roles__card:nth-child(4) { --card-offset: -14px; }
 
 .roles__card--delivery {
   --role-accent: #5b8dd8;
