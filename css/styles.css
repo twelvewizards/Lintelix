@@ -1657,6 +1657,7 @@ body.waitlist-open .site-footer {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem 0.95rem;
+  align-items: start;
 }
 
 .storyboard-tile {
@@ -1668,6 +1669,7 @@ body.waitlist-open .site-footer {
   text-align: left;
   display: grid;
   gap: 0.5rem;
+  align-content: start;
   cursor: pointer;
 }
 
