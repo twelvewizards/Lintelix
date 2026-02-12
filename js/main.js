@@ -340,7 +340,7 @@ window.addEventListener('resize', () => updateTrack(false));
 			scene: 'Scene 4',
 			shot: 'Shot 1',
 			caption: 'INT. MS - Man on a computer, drinking a cup of coffee, using Asset Memory.',
-			image: 'assets/img/the_basement/basement_lastshot.gif'
+			image: 'assets/vids/basement_lastshot.mp4'
 		}
 	];
 
@@ -418,6 +418,37 @@ window.addEventListener('resize', () => updateTrack(false));
 		});
 	}
 
+	function isVideoSource(source) {
+		return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(source || '');
+	}
+
+	function createStoryboardMedia(frame, { lazy = false } = {}) {
+		const source = frame.image || '';
+		const mediaLabel = `${frame.scene} ${frame.shot}`.trim();
+
+		if (isVideoSource(source)) {
+			const video = document.createElement('video');
+			video.src = source;
+			video.muted = true;
+			video.loop = true;
+			video.autoplay = true;
+			video.playsInline = true;
+			video.preload = lazy ? 'metadata' : 'auto';
+			video.setAttribute('aria-label', mediaLabel);
+			video.setAttribute('disablepictureinpicture', '');
+			video.setAttribute('controlslist', 'nodownload noplaybackrate noremoteplayback');
+			return video;
+		}
+
+		const image = document.createElement('img');
+		image.src = source;
+		image.alt = mediaLabel;
+		if (lazy) {
+			image.loading = 'lazy';
+		}
+		return image;
+	}
+
 	function createTile(frame, frameIndex) {
 		const tile = document.createElement('button');
 		tile.type = 'button';
@@ -436,11 +467,7 @@ window.addEventListener('resize', () => updateTrack(false));
 
 		const frameWrap = document.createElement('span');
 		frameWrap.className = 'storyboard-tile__frame';
-		const image = document.createElement('img');
-		image.src = frame.image;
-		image.alt = `${frame.scene} ${frame.shot}`;
-		image.loading = 'lazy';
-		frameWrap.append(image);
+		frameWrap.append(createStoryboardMedia(frame, { lazy: true }));
 
 		const caption = document.createElement('p');
 		caption.className = 'storyboard-tile__caption';
@@ -504,10 +531,7 @@ window.addEventListener('resize', () => updateTrack(false));
 
 		const frameWrap = document.createElement('div');
 		frameWrap.className = 'storyboard-modal__single-frame';
-		const image = document.createElement('img');
-		image.src = frame.image;
-		image.alt = `${frame.scene} ${frame.shot}`;
-		frameWrap.append(image);
+		frameWrap.append(createStoryboardMedia(frame));
 
 		const caption = document.createElement('p');
 		caption.className = 'storyboard-modal__single-caption';
