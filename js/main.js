@@ -1272,3 +1272,73 @@ window.addEventListener('resize', () => updateTrack(false));
 		}
 	}, true);
 })();
+
+/* ── Advantages pills: repel from cursor ── */
+(function () {
+	const pills = document.querySelectorAll('.advantages__list li');
+	if (!pills.length) return;
+
+	const REPEL_DISTANCE = 30; // stronger max repel distance in px
+	const SMOOTHING = 0.18; // 0..1, higher = faster response
+	const SNAP_EPSILON = 0.08;
+
+	pills.forEach((pill) => {
+		let currentX = 0;
+		let currentY = 0;
+		let targetX = 0;
+		let targetY = 0;
+		let directionX = 0;
+		let directionY = -1;
+		let rafId = null;
+
+		const tick = () => {
+			currentX += (targetX - currentX) * SMOOTHING;
+			currentY += (targetY - currentY) * SMOOTHING;
+
+			if (Math.abs(currentX - targetX) < SNAP_EPSILON) currentX = targetX;
+			if (Math.abs(currentY - targetY) < SNAP_EPSILON) currentY = targetY;
+
+			pill.style.setProperty('--repel-x', `${currentX.toFixed(2)}px`);
+			pill.style.setProperty('--repel-y', `${currentY.toFixed(2)}px`);
+
+			if (currentX !== targetX || currentY !== targetY) {
+				rafId = requestAnimationFrame(tick);
+			} else {
+				rafId = null;
+			}
+		};
+
+		const ensureTicking = () => {
+			if (rafId === null) {
+				rafId = requestAnimationFrame(tick);
+			}
+		};
+
+		pill.addEventListener('mousemove', (e) => {
+			const rect = pill.getBoundingClientRect();
+			const cx = rect.left + rect.width / 2;
+			const cy = rect.top + rect.height / 2;
+			const dx = e.clientX - cx;
+			const dy = e.clientY - cy;
+			const dist = Math.sqrt(dx * dx + dy * dy);
+
+			if (dist > 0.001) {
+				directionX = dx / dist;
+				directionY = dy / dist;
+			}
+
+			// Normalise direction and push opposite to cursor
+			targetX = -directionX * REPEL_DISTANCE;
+			targetY = -directionY * REPEL_DISTANCE;
+			ensureTicking();
+		});
+
+		pill.addEventListener('mouseenter', ensureTicking);
+
+		pill.addEventListener('mouseleave', () => {
+			targetX = 0;
+			targetY = 0;
+			ensureTicking();
+		});
+	});
+})();
