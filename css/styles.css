@@ -550,16 +550,66 @@ html { scroll-behavior: smooth; }
 }
 
 .feature__container {
-  max-width: 1100px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   display: grid;
   gap: 2rem;
+  justify-items: stretch;
+}
+
+.feature__header {
+  display: flex;
+  justify-content: center;
+}
+
+.feature__layout {
+  display: grid;
+  --feature-side-width: clamp(240px, 30vw, 360px);
+  grid-template-columns: minmax(0, 1fr) var(--feature-side-width);
+  gap: 1.4rem;
+  align-items: stretch;
+}
+
+/* Allow both columns to shrink with the container (prevents overflow as the video scales down). */
+.feature__layout > * {
+  min-width: 0;
+  min-height: 0;
+}
+
+.feature__demo {
+  display: grid;
+  gap: 1.4rem;
+  align-content: start;
+}
+
+.feature__support {
+  display: grid;
+  gap: 0.35rem;
   justify-items: center;
   text-align: center;
+  margin-top: -0.35rem;
+}
+
+.feature__support-title {
+  margin: 0;
+  font-family: "Sora", "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.feature__support-text {
+  margin: 0;
+  max-width: 72ch;
+  color: rgba(226, 240, 255, 0.78);
+  font-size: 0.98rem;
+  line-height: 1.55;
 }
 
 .feature__title {
-  width: min(920px, 100%);
+  width: 100%;
   display: grid;
   align-items: center;
   gap: 1.5rem;
@@ -652,7 +702,7 @@ color: #CA4246;
   background-position: center;
 
   position: relative;
-  width: min(920px, 100%);
+  width: 100%;
   border-radius: min(2vw, 18px);
   border: var(--accent) 3px solid;
   overflow: hidden;
@@ -708,9 +758,84 @@ color: #CA4246;
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  gap: 1.25rem;
   justify-items: center;
   text-align: center;
+}
+
+/* Side-by-side layout: models sit to the right of the video */
+.models--side {
+  padding: 0;
+  width: 100%;
+  justify-self: end;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.models--side .models__container {
+  max-width: none;
+  margin: 0;
+  justify-items: stretch;
+  text-align: left;
+  gap: 0.9rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.models--side .models__subtitle {
+  max-width: none;
+}
+
+.models--side .models__grid {
+  width: 100%;
+  grid-template-columns: 1fr;
+  margin-top: 0.25rem;
+  height: 100%;
+  grid-template-rows: repeat(3, 1fr);
+  align-content: stretch;
+  min-height: 0;
+  gap: clamp(0.6rem, 1vw, 1rem);
+}
+
+.models--side .models__item {
+  padding: 0.85rem 0.9rem 0.9rem;
+  border-radius: 14px;
+  height: 100%;
+  display: grid;
+  align-content: start;
+  min-height: 0;
+}
+
+.models--side .models__item-title {
+  font-size: clamp(0.9rem, 1.05vw, 0.94rem);
+}
+
+.models--side .models__item-title::after {
+  width: 34px;
+  margin-top: 0.45rem;
+}
+
+.models--side .models__item-text {
+  margin-top: 0.6rem;
+  font-size: clamp(0.84rem, 1vw, 0.88rem);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+/* As the split layout approaches the collapse breakpoint, tighten card spacing so the column
+   can stay <= video height while still shrinking with it. */
+@media (max-width: 1120px) and (min-width: 981px) {
+  .models--side .models__item {
+    padding: 0.75rem 0.8rem 0.8rem;
+  }
+
+  .models--side .models__item-text {
+    margin-top: 0.5rem;
+  }
 }
 
 .models__title {
@@ -774,6 +899,17 @@ color: #CA4246;
   }
   .models {
     padding-bottom: 2.5rem;
+  }
+}
+
+@media (max-width: 980px) {
+  .feature__layout {
+    grid-template-columns: 1fr;
+  }
+  .models--side {
+    margin-top: 0.25rem;
+    width: 100%;
+    justify-self: stretch;
   }
 }
 
@@ -2010,7 +2146,7 @@ body.waitlist-open .site-footer {
 /* Circular layout wrapper */
 .about__circle {
   position: relative;
-  width: min(1200px, 100%);
+  width: min(var(--content-max-width), 100%);
   height: 900px;
   display: grid;
   place-items: center;
