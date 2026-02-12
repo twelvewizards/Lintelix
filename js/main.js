@@ -29,6 +29,34 @@ updateParallax();
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', updateParallax);
 
+// Navbar anchor links: smooth scroll with fixed offset for sticky nav
+(function () {
+	const NAV_SCROLL_OFFSET = 40;
+	const navLinks = document.querySelectorAll('.top-nav__link[href^="#"]');
+	if (!navLinks.length) return;
+
+	navLinks.forEach((link) => {
+		link.addEventListener('click', (event) => {
+			const hash = link.getAttribute('href');
+			if (!hash || hash === '#') return;
+
+			const target = document.querySelector(hash);
+			if (!target) return;
+
+			event.preventDefault();
+			const targetTop = target.getBoundingClientRect().top + window.scrollY - NAV_SCROLL_OFFSET;
+			window.scrollTo({
+				top: Math.max(0, targetTop),
+				behavior: 'smooth'
+			});
+
+			if (window.history && typeof window.history.replaceState === 'function') {
+				window.history.replaceState(null, '', hash);
+			}
+		});
+	});
+})();
+
 // Navbar: toggle semi-transparent background when not at the top
 (function () {
 	const topNav = document.querySelector('.top-nav');

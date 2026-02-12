@@ -1543,7 +1543,6 @@ color: #CA4246;
 
 .action {
   padding: 3rem 1.5rem;
-  background: #000000;
 }
 
 .action__container {
@@ -1563,6 +1562,16 @@ color: #CA4246;
   font-size: clamp(1.1rem, 2.1vw, 1.5rem);
 }
 
+.action__subtitle {
+  margin: 0;
+  max-width: 56ch;
+  justify-self: center;
+  text-align: center;
+  color: rgba(226, 240, 255, 0.78);
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
 .action__frame {
   border-radius: 0;
   border: none;
@@ -1577,7 +1586,7 @@ color: #CA4246;
   position: relative;
   overflow: hidden;
   --action-left-shift: clamp(8px, 1.2vw, 18px);
-  --action-slide-width: clamp(640px, 64vw, 840px);
+  --action-slide-width: clamp(800px, 80vw, 930px);
   margin-left: calc(-1 * var(--action-left-shift));
   width: calc(100% + var(--action-left-shift));
   touch-action: pan-y;
@@ -1611,12 +1620,12 @@ color: #CA4246;
 
 .action__carousel::before {
   left: 0;
-  background: linear-gradient(90deg, #000000 10%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(90deg, #070b12 10%, rgba(0, 0, 0, 0) 100%);
 }
 
 .action__carousel::after {
   right: 0;
-  background: linear-gradient(270deg, #000000 10%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(270deg, #070f1b 10%, rgba(0, 0, 0, 0) 100%);
 }
 
 .action__carousel.action__carousel--at-start::before {
