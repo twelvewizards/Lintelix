@@ -29,6 +29,40 @@ updateParallax();
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', updateParallax);
 
+// Feature demo video: overlay play button
+(function () {
+	const video = document.querySelector('.feature__video');
+	const playButton = document.querySelector('.feature__play');
+	if (!video || !playButton) return;
+	let controlsUnlocked = video.hasAttribute('controls');
+
+	const unlockControls = () => {
+		if (controlsUnlocked) return;
+		video.setAttribute('controls', '');
+		controlsUnlocked = true;
+	};
+
+	const updatePlayButton = () => {
+		if (video.paused || video.ended) {
+			playButton.classList.remove('is-hidden');
+		} else {
+			playButton.classList.add('is-hidden');
+		}
+	};
+
+	playButton.addEventListener('click', () => {
+		unlockControls();
+		video.play();
+	});
+
+	video.addEventListener('play', unlockControls);
+	video.addEventListener('play', updatePlayButton);
+	video.addEventListener('pause', updatePlayButton);
+	video.addEventListener('ended', updatePlayButton);
+
+	updatePlayButton();
+})();
+
 // Navbar anchor links: smooth scroll with fixed offset for sticky nav
 (function () {
 	const NAV_SCROLL_OFFSET = 40;
